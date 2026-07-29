@@ -49,9 +49,8 @@ export default function Home() {
     }
 
     if (videoRef.current && videoRef.current.readyState >= 2) {
-      const duration = videoRef.current.duration || 7;
-      // Map 0 -> 1.0 progress to 1s -> duration
-      const time = 1 + (duration - 1) * latest;
+      // Map 0 -> 1.0 progress to 0s -> 8s
+      const time = 8 * latest;
       videoRef.current.currentTime = time;
     }
   });
@@ -117,11 +116,11 @@ export default function Home() {
             )}
             <motion.video
               ref={videoRef}
-              src="/video/new-version.mp4#t=1.0"
+              src="/video/new-version.mp4"
               onCanPlayThrough={() => setVideoLoaded(true)}
               onLoadedData={() => setVideoLoaded(true)}
               onLoadedMetadata={(e) => {
-                (e.target as HTMLVideoElement).currentTime = 1;
+                (e.target as HTMLVideoElement).currentTime = 0;
               }}
               muted
               playsInline
