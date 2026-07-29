@@ -18,9 +18,7 @@ export default function Home() {
       videoRef.current.load();
       const playPromise = videoRef.current.play();
       if (playPromise !== undefined) {
-        playPromise.then(() => {
-          videoRef.current?.pause();
-        }).catch(() => {
+        playPromise.catch(() => {
           // Auto-play prevented or video not ready, ignore
         });
       }
@@ -48,11 +46,6 @@ export default function Home() {
       setBgImageVisible(false);
     }
 
-    if (videoRef.current && videoRef.current.readyState >= 2) {
-      // Map 0 -> 1.0 progress to 0s -> 8s
-      const time = 8 * latest;
-      videoRef.current.currentTime = time;
-    }
   });
 
   // Title fades out slowly on scroll
@@ -119,9 +112,8 @@ export default function Home() {
               src="/video/new-version.mp4"
               onCanPlayThrough={() => setVideoLoaded(true)}
               onLoadedData={() => setVideoLoaded(true)}
-              onLoadedMetadata={(e) => {
-                (e.target as HTMLVideoElement).currentTime = 0;
-              }}
+              autoPlay
+              loop
               muted
               playsInline
               preload="auto"
