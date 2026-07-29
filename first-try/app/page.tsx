@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useScroll, useTransform, motion, useMotionValueEvent, useSpring } from "framer-motion";
 import { Search, ShoppingBag, User, ChevronDown, Zap, Fingerprint, Aperture, Infinity, MessageCircle, GitBranch, Briefcase } from "lucide-react";
 
@@ -8,6 +8,20 @@ export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [titleHidden, setTitleHidden] = useState(false);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.load();
+      const playPromise = videoRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          videoRef.current?.pause();
+        }).catch(() => {
+          // Auto-play prevented or video not ready, ignore
+        });
+      }
+    }
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,

@@ -250,7 +250,7 @@ body {
   position: relative;
   z-index: 20;
   min-height: 100vh;
-  background: url('/photos/bg-image.png') center/cover no-repeat fixed;
+  background: url('/photos/bg-image.jpg') center/cover no-repeat fixed;
   color: #ffffff;
   display: flex;
   flex-direction: column;
