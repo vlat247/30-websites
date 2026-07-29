@@ -126,9 +126,9 @@ body {
   opacity: 0.9;
 }
 
-/* 400vh to allow plenty of scrolling space for the scrub */
+/* 600vh to allow plenty of scrolling space for the scrub and text */
 .scroll-container {
-  height: 400vh;
+  height: 600vh;
   position: relative;
 }
 
@@ -216,37 +216,78 @@ body {
   margin: 0;
 }
 
-.product-phrase {
+.product-phrase-container {
   position: absolute;
   z-index: 10;
   font-family: 'Special Gothic Expanded One', sans-serif;
-  font-size: 6vw;
+  font-size: 5vw; /* Slightly smaller to fit 3 lines better */
   font-weight: 600;
   letter-spacing: -0.01em;
-  display: flex;
-  gap: 1.5vw;
+  display: grid;
+  place-items: center;
   transform: scaleY(1.4);
   transform-origin: center;
 }
 
+.product-phrase {
+  grid-area: 1 / 1;
+  display: flex;
+  gap: 1.5vw;
+}
+
 .product-phrase span {
-  /* Glassmorphism Text Effect */
+  /* Apple-Inspired Premium Frosted Glass Text (Fixed Bounding Box) */
+  
+  /* Top-left light source and 15-25% subtle transparency */
   background: linear-gradient(
-    145deg, 
-    rgba(255, 255, 255, 0.9) 0%, 
-    rgba(255, 255, 255, 0.3) 40%, 
-    rgba(255, 255, 255, 0.05) 60%, 
-    rgba(255, 255, 255, 0.6) 100%
+    135deg, 
+    rgba(255, 255, 255, 0.6) 0%,   /* Faint top-left light source */
+    rgba(255, 255, 255, 0.15) 35%, /* Solid frosted glass body */
+    rgba(255, 255, 255, 0.05) 75%, /* Realistic refraction falloff */
+    rgba(255, 255, 255, 0.4) 100%  /* Soft bottom-right ambient reflection */
   );
+  
+  /* Apply the physical glass material to the letters */
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
   background-clip: text;
   color: transparent;
+  -webkit-text-fill-color: transparent;
   
+  /* Delicate edge reflections */
   -webkit-text-stroke: 1px rgba(255, 255, 255, 0.4);
-  filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.9)) drop-shadow(0 10px 20px rgba(0, 0, 0, 0.7));
+  
+  /* Soft ambient lighting and natural specular highlights */
+  filter: 
+    drop-shadow(-1px -1px 2px rgba(255, 255, 255, 0.3)) /* Top-left specular highlight */
+    drop-shadow(0 15px 25px rgba(0, 0, 0, 0.3))         /* Soft ambient shadow */
+    drop-shadow(0 5px 10px rgba(0, 0, 0, 0.2));         /* Grounding physical shadow */
+    
   will-change: transform, opacity, filter;
   transform: translateZ(0);
+}
+
+.product-phrase-container span.rainbow-text {
+  /* Iridescent Glass Effect */
+  background: linear-gradient(
+    135deg, 
+    rgba(255, 105, 180, 0.6) 0%,   /* Hot Pink */
+    rgba(255, 165, 0, 0.4) 25%,    /* Orange */
+    rgba(50, 205, 50, 0.3) 50%,    /* Lime Green */
+    rgba(30, 144, 255, 0.5) 75%,   /* Dodger Blue */
+    rgba(147, 112, 219, 0.7) 100%  /* Medium Purple */
+  );
+  
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  
+  -webkit-text-stroke: 1.5px rgba(255, 255, 255, 0.6); /* Brighter edge reflection */
+  
+  filter: 
+    drop-shadow(-1px -1px 3px rgba(255, 255, 255, 0.5)) /* Specular highlight */
+    drop-shadow(0 15px 25px rgba(255, 105, 180, 0.2))   /* Iridescent ambient glow */
+    drop-shadow(0 5px 10px rgba(0, 0, 0, 0.2));         /* Grounding physical shadow */
 }
 
 .info-section {

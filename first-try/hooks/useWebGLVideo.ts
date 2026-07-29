@@ -43,22 +43,15 @@ const fragmentShaderSource = `
       videoUv.x = videoUv.x * (u_canvasAspect / u_videoAspect) + xOffset;
     }
     
-    // Calculate circular distance to mouse
+    // Calculate circular distance to mouse using cellCanvasUv for a blocky ASCII grid edge
     vec2 aspectVec = vec2(u_canvasAspect, 1.0);
     float dist = distance(cellCanvasUv * aspectVec, u_mouse * aspectVec);
     
-    // Distortion offset based on mouse
-    vec2 offset = vec2(0.0);
-    if (dist < 0.3) {
-      float force = (0.3 - dist) / 0.3;
-      offset = (cellCanvasUv - u_mouse) * force * 0.05 * sin(u_time * 5.0);
-    }
+    float radius = 0.04;
+    bool inShape = dist < radius;
     
-    // Sample the video (with chromatic aberration around distortion)
-    float r = texture2D(u_image, videoUv + offset + vec2(0.01, 0.0)).r;
-    float g = texture2D(u_image, videoUv + offset).g;
-    float b = texture2D(u_image, videoUv + offset - vec2(0.01, 0.0)).b;
-    vec3 col = vec3(r, g, b);
+    // Sample the video (no distortion)
+    vec3 col = texture2D(u_image, videoUv).rgb;
     
     float brightness = dot(col, vec3(0.299, 0.587, 0.114));
     
@@ -71,12 +64,13 @@ const fragmentShaderSource = `
     vec2 asciiUv = vec2((charIndex + subUv.x) / u_numChars, 1.0 - subUv.y);
     float charBrightness = texture2D(u_ascii, asciiUv).r;
     
-    // Colorize the character and boost brightness
-    vec3 finalColor = col * charBrightness * 1.5;
-    
-    // Add interactive glow
-    if (dist < 0.25) {
-      finalColor += vec3(0.0, 1.0, 0.5) * (0.25 - dist) * 3.0 * charBrightness;
+    vec3 finalColor;
+    if (inShape) {
+      // Invert effect inside the shape: background takes the video color, characters become dark
+      finalColor = col * (1.0 - charBrightness) * 1.5;
+    } else {
+      // Normal ASCII effect outside
+      finalColor = col * charBrightness * 1.5;
     }
     
     gl_FragColor = vec4(finalColor, 1.0);
@@ -268,8 +262,10 @@ export function useWebGLVideo(
       let mx = 0.5;
       let my = 0.5;
       if (mouseX && mouseY) {
+        // Normal X mapping
         mx = mouseX.get() / window.innerWidth;
-        my = 1.0 - (mouseY.get() / window.innerHeight); // WebGL Y goes bottom-up
+        // Normal Y mapping (v_texCoord.y is 0 at top, 1 at bottom, matching screen)
+        my = mouseY.get() / window.innerHeight;
       }
       gl.uniform2f(mouseLocation, mx, my);
       

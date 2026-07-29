@@ -9,7 +9,6 @@ export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [titleHidden, setTitleHidden] = useState(false);
   const [videoLoaded, setVideoLoaded] = useState(false);
 
   // Mouse interactivity state
@@ -62,53 +61,88 @@ export default function Home() {
 
   const [bgImageVisible, setBgImageVisible] = useState(false);
 
-  // Video Scrubbing and triggers
   useMotionValueEvent(scrollYProgress, "change", (latest) => {
-    if (latest > 0.4 && !titleHidden) {
-      setTitleHidden(true);
-    } else if (latest <= 0.4 && titleHidden) {
-      setTitleHidden(false);
-    }
-
-    if (latest >= 0.5 && !bgImageVisible) {
-      setBgImageVisible(true);
-    } else if (latest < 0.5 && bgImageVisible) {
-      setBgImageVisible(false);
-    }
-
+    setBgImageVisible(prev => {
+      if (latest >= 0.5 && !prev) return true;
+      if (latest < 0.5 && prev) return false;
+      return prev;
+    });
   });
 
   // Title fades out slowly on scroll
-  const titleOpacity = useTransform(scrollYProgress, [0.1, 0.4], [1, 0]);
+  const titleOpacity = useTransform(scrollYProgress, [0, 0.4, 1], [1, 0, 0], { clamp: true });
+  const titleDisplay = useTransform(scrollYProgress, (v) => v > 0.45 ? "none" : "block");
 
   // Word transforms for "It's your choice"
   const springConfig = { stiffness: 45, damping: 18, mass: 1 };
   
-  const rawWord1Opacity = useTransform(scrollYProgress, [0.55, 0.65], [0, 1]);
-  const rawWord1Y = useTransform(scrollYProgress, [0.55, 0.65], [80, 0]);
+  const rawWord1Opacity = useTransform(scrollYProgress, [0.50, 0.54, 0.68, 0.70], [0, 1, 1, 0]);
+  const rawWord1Y = useTransform(scrollYProgress, [0.50, 0.54, 0.68, 0.70], [80, 0, 0, -80]);
   const word1Opacity = useSpring(rawWord1Opacity, springConfig);
   const word1Y = useSpring(rawWord1Y, springConfig);
 
-  const rawWord2Opacity = useTransform(scrollYProgress, [0.65, 0.75], [0, 1]);
-  const rawWord2Y = useTransform(scrollYProgress, [0.65, 0.75], [80, 0]);
+  const rawWord2Opacity = useTransform(scrollYProgress, [0.52, 0.56, 0.68, 0.70], [0, 1, 1, 0]);
+  const rawWord2Y = useTransform(scrollYProgress, [0.52, 0.56, 0.68, 0.70], [80, 0, 0, -80]);
   const word2Opacity = useSpring(rawWord2Opacity, springConfig);
   const word2Y = useSpring(rawWord2Y, springConfig);
 
-  const rawWord3Opacity = useTransform(scrollYProgress, [0.75, 0.85], [0, 1]);
-  const rawWord3Y = useTransform(scrollYProgress, [0.75, 0.85], [80, 0]);
+  const rawWord3Opacity = useTransform(scrollYProgress, [0.54, 0.58, 0.68, 0.70], [0, 1, 1, 0]);
+  const rawWord3Y = useTransform(scrollYProgress, [0.54, 0.58, 0.68, 0.70], [80, 0, 0, -80]);
   const word3Opacity = useSpring(rawWord3Opacity, springConfig);
   const word3Y = useSpring(rawWord3Y, springConfig);
 
-  const rawWord4Opacity = useTransform(scrollYProgress, [0.85, 0.95], [0, 1]);
-  const rawWord4Y = useTransform(scrollYProgress, [0.85, 0.95], [80, 0]);
+  const rawWord4Opacity = useTransform(scrollYProgress, [0.56, 0.60, 0.68, 0.70], [0, 1, 1, 0]);
+  const rawWord4Y = useTransform(scrollYProgress, [0.56, 0.60, 0.68, 0.70], [80, 0, 0, -80]);
   const word4Opacity = useSpring(rawWord4Opacity, springConfig);
   const word4Y = useSpring(rawWord4Y, springConfig);
 
-  const words = [
-    { text: "We", opacity: word1Opacity, y: word1Y },
-    { text: "build", opacity: word2Opacity, y: word2Y },
-    { text: "this", opacity: word3Opacity, y: word3Y },
-    { text: "reality", opacity: word4Opacity, y: word4Y },
+  const rawWord5Opacity = useTransform(scrollYProgress, [0.70, 0.74, 0.88, 0.90], [0, 1, 1, 0]);
+  const rawWord5Y = useTransform(scrollYProgress, [0.70, 0.74, 0.88, 0.90], [80, 0, 0, -80]);
+  const word5Opacity = useSpring(rawWord5Opacity, springConfig);
+  const word5Y = useSpring(rawWord5Y, springConfig);
+
+  const rawWord6Opacity = useTransform(scrollYProgress, [0.72, 0.76, 0.88, 0.90], [0, 1, 1, 0]);
+  const rawWord6Y = useTransform(scrollYProgress, [0.72, 0.76, 0.88, 0.90], [80, 0, 0, -80]);
+  const word6Opacity = useSpring(rawWord6Opacity, springConfig);
+  const word6Y = useSpring(rawWord6Y, springConfig);
+
+  const rawWord7Opacity = useTransform(scrollYProgress, [0.74, 0.78, 0.88, 0.90], [0, 1, 1, 0]);
+  const rawWord7Y = useTransform(scrollYProgress, [0.74, 0.78, 0.88, 0.90], [80, 0, 0, -80]);
+  const word7Opacity = useSpring(rawWord7Opacity, springConfig);
+  const word7Y = useSpring(rawWord7Y, springConfig);
+
+  const rawWord8Opacity = useTransform(scrollYProgress, [0.90, 0.94], [0, 1]);
+  const rawWord8Y = useTransform(scrollYProgress, [0.90, 0.94], [80, 0]);
+  const word8Opacity = useSpring(rawWord8Opacity, springConfig);
+  const word8Y = useSpring(rawWord8Y, springConfig);
+
+  const rawWord9Opacity = useTransform(scrollYProgress, [0.92, 0.96], [0, 1]);
+  const rawWord9Y = useTransform(scrollYProgress, [0.92, 0.96], [80, 0]);
+  const word9Opacity = useSpring(rawWord9Opacity, springConfig);
+  const word9Y = useSpring(rawWord9Y, springConfig);
+
+  const rawWord10Opacity = useTransform(scrollYProgress, [0.94, 0.98], [0, 1]);
+  const rawWord10Y = useTransform(scrollYProgress, [0.94, 0.98], [80, 0]);
+  const word10Opacity = useSpring(rawWord10Opacity, springConfig);
+  const word10Y = useSpring(rawWord10Y, springConfig);
+
+  const lines = [
+    [
+      { text: "We", opacity: word1Opacity, y: word1Y },
+      { text: "build", opacity: word2Opacity, y: word2Y },
+      { text: "this", opacity: word3Opacity, y: word3Y },
+      { text: "reality", opacity: word4Opacity, y: word4Y },
+    ],
+    [
+      { text: "not", opacity: word5Opacity, y: word5Y },
+      { text: "with", opacity: word6Opacity, y: word6Y },
+      { text: "code,", opacity: word7Opacity, y: word7Y },
+    ],
+    [
+      { text: "but", opacity: word8Opacity, y: word8Y },
+      { text: "with", opacity: word9Opacity, y: word9Y },
+      { text: "vision.", opacity: word10Opacity, y: word10Y, className: "rainbow-text" },
+    ]
   ];
 
   // Smooth mouse coordinates
@@ -205,25 +239,28 @@ export default function Home() {
 
 
 
-          {!titleHidden && (
-            <motion.h1 style={{ opacity: titleOpacity }} className="title-see-true">
-              SEE THROUGH
-            </motion.h1>
-          )}
+          <motion.h1 style={{ opacity: titleOpacity, display: titleDisplay }} className="title-see-true">
+            SEE THROUGH
+          </motion.h1>
 
           {bgImageVisible && (
-            <motion.div className="product-phrase">
-              {words.map((word, i) => (
-                <motion.span
-                  key={i}
-                  style={{
-                    opacity: word.opacity,
-                    y: word.y,
-                    display: "inline-block"
-                  }}
-                >
-                  {word.text}
-                </motion.span>
+            <motion.div className="product-phrase-container">
+              {lines.map((line, lineIndex) => (
+                <div key={lineIndex} className="product-phrase">
+                  {line.map((word, i) => (
+                    <motion.span
+                      key={i}
+                      style={{
+                        opacity: word.opacity,
+                        y: word.y,
+                        display: "inline-block"
+                      }}
+                      className={word.className || ""}
+                    >
+                      {word.text}
+                    </motion.span>
+                  ))}
+                </div>
               ))}
             </motion.div>
           )}
