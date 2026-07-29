@@ -8,9 +8,13 @@ export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [titleHidden, setTitleHidden] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
 
   useEffect(() => {
     if (videoRef.current) {
+      if (videoRef.current.readyState >= 3) {
+        setVideoLoaded(true);
+      }
       videoRef.current.load();
       const playPromise = videoRef.current.play();
       if (playPromise !== undefined) {
@@ -105,9 +109,17 @@ export default function Home() {
       <div ref={containerRef} className="scroll-container">
         <div className="sticky-container">
           <div className="video-wrapper">
+            {!videoLoaded && (
+              <div className="video-loader-overlay">
+                <div className="ios-spinner"></div>
+                <p>Loading Experience...</p>
+              </div>
+            )}
             <motion.video
               ref={videoRef}
               src="/video/upscaled-video.mp4#t=1.0"
+              onCanPlayThrough={() => setVideoLoaded(true)}
+              onLoadedData={() => setVideoLoaded(true)}
               onLoadedMetadata={(e) => {
                 (e.target as HTMLVideoElement).currentTime = 1;
               }}
