@@ -18,13 +18,14 @@ export function useAsciiVideo(
     if (!ctx) return;
 
     let animationFrameId: number;
+    let mouseX = -1000;
+    let mouseY = -1000;
 
-    // Adjust this scale to change the density/resolution of the ASCII characters
-    // 0.04 means the canvas is rendered at 4% of the video's original resolution.
-    const renderScale = 0.05; 
-    
-    // The font aspect ratio of monospace characters is roughly 0.5 (half as wide as they are tall)
-    const fontAspectRatio = 0.5;
+    const handleMouseMove = (e: MouseEvent) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    };
+    window.addEventListener('mousemove', handleMouseMove);
 
     const draw = () => {
       animationFrameId = requestAnimationFrame(draw);
@@ -33,8 +34,15 @@ export function useAsciiVideo(
         return;
       }
 
-      const w = Math.floor(video.videoWidth * renderScale);
-      const h = Math.floor(video.videoHeight * renderScale * fontAspectRatio);
+      const containerW = window.innerWidth;
+      const containerH = window.innerHeight;
+
+      // 120 characters across the screen for good resolution
+      const w = 120;
+      const fontAspectRatio = 0.6; // Typical monospace width/height ratio
+      const charWidth = containerW / w;
+      const charHeight = charWidth / fontAspectRatio;
+      const h = Math.ceil(containerH / charHeight);
 
       if (w === 0 || h === 0) return;
 
@@ -43,9 +51,25 @@ export function useAsciiVideo(
         canvas.height = h;
       }
 
-      ctx.drawImage(video, 0, 0, w, h);
+      // Object-fit: cover math for the video source
+      const videoRatio = video.videoWidth / video.videoHeight;
+      const screenRatio = containerW / containerH;
+
+      let sx = 0, sy = 0, sw = video.videoWidth, sh = video.videoHeight;
+      if (screenRatio > videoRatio) {
+        sh = video.videoWidth / screenRatio;
+        sy = (video.videoHeight - sh) / 2;
+      } else {
+        sw = video.videoHeight * screenRatio;
+        sx = (video.videoWidth - sw) / 2;
+      }
+
+      ctx.drawImage(video, sx, sy, sw, sh, 0, 0, w, h);
       const imageData = ctx.getImageData(0, 0, w, h);
       const data = imageData.data;
+
+      const gridMouseX = mouseX / charWidth;
+      const gridMouseY = mouseY / charHeight;
 
       let asciiStr = '';
       for (let y = 0; y < h; y++) {
@@ -55,16 +79,28 @@ export function useAsciiVideo(
           const g = data[offset + 1];
           const b = data[offset + 2];
           
-          // Calculate perceived brightness (luminance)
-          const brightness = (0.299 * r + 0.587 * g + 0.114 * b);
+          let brightness = (0.299 * r + 0.587 * g + 0.114 * b);
           
-          // Map brightness (0-255) to character index
+          // Interactive hover reveal!
+          const dx = x - gridMouseX;
+          const dy = y - gridMouseY;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          
+          if (dist < 12) {
+             // Boost brightness intensely near the mouse cursor
+             brightness += Math.max(0, (12 - dist) * 15);
+          }
+          
+          brightness = Math.min(255, Math.max(0, brightness));
+          
           const charIndex = Math.floor((brightness / 255) * (DENSITY.length - 1));
           asciiStr += DENSITY[charIndex];
         }
-        asciiStr += '\n';
+        asciiStr += '\\n';
       }
 
+      pre.style.fontSize = `${charHeight}px`;
+      pre.style.lineHeight = `${charHeight}px`;
       pre.textContent = asciiStr;
     };
 
@@ -72,6 +108,7 @@ export function useAsciiVideo(
 
     return () => {
       cancelAnimationFrame(animationFrameId);
+      window.removeEventListener('mousemove', handleMouseMove);
     };
   }, [videoRef, asciiRef, isLoaded]);
 }
