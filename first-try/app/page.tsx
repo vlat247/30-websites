@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState } from "react";
 import { useScroll, useTransform, motion, useMotionValueEvent, useSpring } from "framer-motion";
-import { Search, ShoppingBag, User, ChevronDown, Activity, Zap, Eye, ShieldCheck, Battery, Brain, Cpu, Globe, Sparkles, Fingerprint, Aperture, Infinity, Hexagon, MessageCircle, GitBranch, Briefcase } from "lucide-react";
+import { Search, ShoppingBag, User, ChevronDown, Zap, Fingerprint, Aperture, Infinity, MessageCircle, GitBranch, Briefcase } from "lucide-react";
 
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
