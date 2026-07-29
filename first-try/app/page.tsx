@@ -117,7 +117,7 @@ export default function Home() {
             )}
             <motion.video
               ref={videoRef}
-              src="/video/upscaled-video.mp4#t=1.0"
+              src="/video/new-version.mp4#t=1.0"
               onCanPlayThrough={() => setVideoLoaded(true)}
               onLoadedData={() => setVideoLoaded(true)}
               onLoadedMetadata={(e) => {
