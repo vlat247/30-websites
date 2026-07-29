@@ -76,53 +76,53 @@ export default function Home() {
   // Word transforms for "It's your choice"
   const springConfig = { stiffness: 45, damping: 18, mass: 1 };
   
-  const rawWord1Opacity = useTransform(scrollYProgress, [0.50, 0.54, 0.68, 0.70], [0, 1, 1, 0]);
-  const rawWord1Y = useTransform(scrollYProgress, [0.50, 0.54, 0.68, 0.70], [80, 0, 0, -80]);
+  const rawWord1Opacity = useTransform(scrollYProgress, [0.50, 0.53, 0.63, 0.65], [0, 1, 1, 0]);
+  const rawWord1Y = useTransform(scrollYProgress, [0.50, 0.53, 0.63, 0.65], [80, 0, 0, -80]);
   const word1Opacity = useSpring(rawWord1Opacity, springConfig);
   const word1Y = useSpring(rawWord1Y, springConfig);
 
-  const rawWord2Opacity = useTransform(scrollYProgress, [0.52, 0.56, 0.68, 0.70], [0, 1, 1, 0]);
-  const rawWord2Y = useTransform(scrollYProgress, [0.52, 0.56, 0.68, 0.70], [80, 0, 0, -80]);
+  const rawWord2Opacity = useTransform(scrollYProgress, [0.51, 0.54, 0.63, 0.65], [0, 1, 1, 0]);
+  const rawWord2Y = useTransform(scrollYProgress, [0.51, 0.54, 0.63, 0.65], [80, 0, 0, -80]);
   const word2Opacity = useSpring(rawWord2Opacity, springConfig);
   const word2Y = useSpring(rawWord2Y, springConfig);
 
-  const rawWord3Opacity = useTransform(scrollYProgress, [0.54, 0.58, 0.68, 0.70], [0, 1, 1, 0]);
-  const rawWord3Y = useTransform(scrollYProgress, [0.54, 0.58, 0.68, 0.70], [80, 0, 0, -80]);
+  const rawWord3Opacity = useTransform(scrollYProgress, [0.52, 0.55, 0.63, 0.65], [0, 1, 1, 0]);
+  const rawWord3Y = useTransform(scrollYProgress, [0.52, 0.55, 0.63, 0.65], [80, 0, 0, -80]);
   const word3Opacity = useSpring(rawWord3Opacity, springConfig);
   const word3Y = useSpring(rawWord3Y, springConfig);
 
-  const rawWord4Opacity = useTransform(scrollYProgress, [0.56, 0.60, 0.68, 0.70], [0, 1, 1, 0]);
-  const rawWord4Y = useTransform(scrollYProgress, [0.56, 0.60, 0.68, 0.70], [80, 0, 0, -80]);
+  const rawWord4Opacity = useTransform(scrollYProgress, [0.53, 0.56, 0.63, 0.65], [0, 1, 1, 0]);
+  const rawWord4Y = useTransform(scrollYProgress, [0.53, 0.56, 0.63, 0.65], [80, 0, 0, -80]);
   const word4Opacity = useSpring(rawWord4Opacity, springConfig);
   const word4Y = useSpring(rawWord4Y, springConfig);
 
-  const rawWord5Opacity = useTransform(scrollYProgress, [0.70, 0.74, 0.88, 0.90], [0, 1, 1, 0]);
-  const rawWord5Y = useTransform(scrollYProgress, [0.70, 0.74, 0.88, 0.90], [80, 0, 0, -80]);
+  const rawWord5Opacity = useTransform(scrollYProgress, [0.65, 0.68, 0.78, 0.80], [0, 1, 1, 0]);
+  const rawWord5Y = useTransform(scrollYProgress, [0.65, 0.68, 0.78, 0.80], [80, 0, 0, -80]);
   const word5Opacity = useSpring(rawWord5Opacity, springConfig);
   const word5Y = useSpring(rawWord5Y, springConfig);
 
-  const rawWord6Opacity = useTransform(scrollYProgress, [0.72, 0.76, 0.88, 0.90], [0, 1, 1, 0]);
-  const rawWord6Y = useTransform(scrollYProgress, [0.72, 0.76, 0.88, 0.90], [80, 0, 0, -80]);
+  const rawWord6Opacity = useTransform(scrollYProgress, [0.66, 0.69, 0.78, 0.80], [0, 1, 1, 0]);
+  const rawWord6Y = useTransform(scrollYProgress, [0.66, 0.69, 0.78, 0.80], [80, 0, 0, -80]);
   const word6Opacity = useSpring(rawWord6Opacity, springConfig);
   const word6Y = useSpring(rawWord6Y, springConfig);
 
-  const rawWord7Opacity = useTransform(scrollYProgress, [0.74, 0.78, 0.88, 0.90], [0, 1, 1, 0]);
-  const rawWord7Y = useTransform(scrollYProgress, [0.74, 0.78, 0.88, 0.90], [80, 0, 0, -80]);
+  const rawWord7Opacity = useTransform(scrollYProgress, [0.67, 0.70, 0.78, 0.80], [0, 1, 1, 0]);
+  const rawWord7Y = useTransform(scrollYProgress, [0.67, 0.70, 0.78, 0.80], [80, 0, 0, -80]);
   const word7Opacity = useSpring(rawWord7Opacity, springConfig);
   const word7Y = useSpring(rawWord7Y, springConfig);
 
-  const rawWord8Opacity = useTransform(scrollYProgress, [0.90, 0.94], [0, 1]);
-  const rawWord8Y = useTransform(scrollYProgress, [0.90, 0.94], [80, 0]);
+  const rawWord8Opacity = useTransform(scrollYProgress, [0.80, 0.83, 0.98, 1.0], [0, 1, 1, 0]);
+  const rawWord8Y = useTransform(scrollYProgress, [0.80, 0.83, 0.98, 1.0], [80, 0, 0, -80]);
   const word8Opacity = useSpring(rawWord8Opacity, springConfig);
   const word8Y = useSpring(rawWord8Y, springConfig);
 
-  const rawWord9Opacity = useTransform(scrollYProgress, [0.92, 0.96], [0, 1]);
-  const rawWord9Y = useTransform(scrollYProgress, [0.92, 0.96], [80, 0]);
+  const rawWord9Opacity = useTransform(scrollYProgress, [0.81, 0.84, 0.98, 1.0], [0, 1, 1, 0]);
+  const rawWord9Y = useTransform(scrollYProgress, [0.81, 0.84, 0.98, 1.0], [80, 0, 0, -80]);
   const word9Opacity = useSpring(rawWord9Opacity, springConfig);
   const word9Y = useSpring(rawWord9Y, springConfig);
 
-  const rawWord10Opacity = useTransform(scrollYProgress, [0.94, 0.98], [0, 1]);
-  const rawWord10Y = useTransform(scrollYProgress, [0.94, 0.98], [80, 0]);
+  const rawWord10Opacity = useTransform(scrollYProgress, [0.82, 0.85, 0.98, 1.0], [0, 1, 1, 0]);
+  const rawWord10Y = useTransform(scrollYProgress, [0.82, 0.85, 0.98, 1.0], [80, 0, 0, -80]);
   const word10Opacity = useSpring(rawWord10Opacity, springConfig);
   const word10Y = useSpring(rawWord10Y, springConfig);
 
