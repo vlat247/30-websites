@@ -3,12 +3,16 @@
 import { useRef, useState, useEffect } from "react";
 import { useScroll, useTransform, motion, useMotionValueEvent, useSpring } from "framer-motion";
 import { Search, ShoppingBag, User, ChevronDown, Zap, Fingerprint, Aperture, Infinity, MessageCircle, GitBranch, Briefcase } from "lucide-react";
+import { useAsciiVideo } from "../hooks/useAsciiVideo";
 
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const asciiRef = useRef<HTMLPreElement>(null);
   const [titleHidden, setTitleHidden] = useState(false);
   const [videoLoaded, setVideoLoaded] = useState(false);
+
+  useAsciiVideo(videoRef, asciiRef, videoLoaded);
 
   useEffect(() => {
     if (videoRef.current) {
@@ -104,9 +108,11 @@ export default function Home() {
             {!videoLoaded && (
               <div className="video-loader-overlay">
                 <div className="ios-spinner"></div>
-                <p>Loading Experience...</p>
+                <p>Decoding Matrix...</p>
               </div>
             )}
+            
+            <pre ref={asciiRef} className="ascii-bg"></pre>
             <motion.video
               ref={videoRef}
               src="/video/new-version.mp4"
