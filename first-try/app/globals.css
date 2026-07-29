@@ -158,7 +158,7 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0.01; /* Keep playing but practically invisible */
+  opacity: 1; /* Made visible since WebGL filter is removed */
 }
 
 .bg-image-crossfade {
@@ -621,16 +621,5 @@ body {
   height: 100%;
   z-index: 2;
   background-color: #000;
-  color: #fff; /* White ASCII text */
-  font-family: monospace;
-  font-size: 1.55vw;
-  line-height: 1.55vw;
-  letter-spacing: 0;
-  white-space: pre;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  user-select: text;
-  pointer-events: auto;
+  pointer-events: auto; /* Required for mouse events */
 }

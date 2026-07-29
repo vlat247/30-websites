@@ -1,18 +1,44 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import { useScroll, useTransform, motion, useMotionValueEvent, useSpring } from "framer-motion";
+import { useScroll, useTransform, motion, useMotionValueEvent, useSpring, useMotionValue, useMotionTemplate } from "framer-motion";
 import { Search, ShoppingBag, User, ChevronDown, Zap, Fingerprint, Aperture, Infinity, MessageCircle, GitBranch, Briefcase } from "lucide-react";
-import { useAsciiVideo } from "../hooks/useAsciiVideo";
+import { useWebGLVideo } from "../hooks/useWebGLVideo";
 
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const asciiRef = useRef<HTMLPreElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const [titleHidden, setTitleHidden] = useState(false);
   const [videoLoaded, setVideoLoaded] = useState(false);
 
-  useAsciiVideo(videoRef, asciiRef, videoLoaded);
+  // Mouse interactivity state
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const [windowSize, setWindowSize] = useState({ width: 1920, height: 1080 });
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+      
+      const handleResize = () => {
+        setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+      };
+      
+      const handleMouseMove = (e: MouseEvent) => {
+        mouseX.set(e.clientX);
+        mouseY.set(e.clientY);
+      };
+
+      window.addEventListener("resize", handleResize);
+      window.addEventListener("mousemove", handleMouseMove);
+
+      return () => {
+        window.removeEventListener("resize", handleResize);
+        window.removeEventListener("mousemove", handleMouseMove);
+      };
+    }
+  }, [mouseX, mouseY]);
 
   useEffect(() => {
     if (videoRef.current) {
@@ -85,6 +111,20 @@ export default function Home() {
     { text: "reality", opacity: word4Opacity, y: word4Y },
   ];
 
+  // Smooth mouse coordinates
+  const springConfigMouse = { damping: 25, stiffness: 150, mass: 0.5 };
+  const smoothMouseX = useSpring(mouseX, springConfigMouse);
+  const smoothMouseY = useSpring(mouseY, springConfigMouse);
+
+  useWebGLVideo(canvasRef, videoRef, smoothMouseX, smoothMouseY);
+
+  // Spotlight radial gradient that follows the mouse
+  const spotlightMask = useMotionTemplate`radial-gradient(circle 500px at ${smoothMouseX}px ${smoothMouseY}px, rgba(0,255,0,0.6), transparent 80%)`;
+  // Darken everything else a bit
+  const darkenMask = useMotionTemplate`radial-gradient(circle 500px at ${smoothMouseX}px ${smoothMouseY}px, transparent 20%, rgba(0,0,0,0.8) 100%)`;
+
+  // Parallax removed per request
+
   return (
     <main className="main-content">
           <header className="ios-glass-header">
@@ -104,7 +144,11 @@ export default function Home() {
 
       <div ref={containerRef} className="scroll-container">
         <div className="sticky-container">
-          <div className="video-wrapper">
+          
+          <motion.div 
+            className="video-wrapper"
+            style={{ scale: 1.05 }}
+          >
             {!videoLoaded && (
               <div className="video-loader-overlay">
                 <div className="ios-spinner"></div>
@@ -112,10 +156,9 @@ export default function Home() {
               </div>
             )}
             
-            <pre ref={asciiRef} className="ascii-bg"></pre>
             <motion.video
               ref={videoRef}
-              src="/video/new-version.mp4"
+              src="/video/upscaled-compressed.mp4"
               onCanPlayThrough={() => setVideoLoaded(true)}
               onLoadedData={() => setVideoLoaded(true)}
               autoPlay
@@ -124,12 +167,41 @@ export default function Home() {
               playsInline
               preload="auto"
               className="bg-video"
+              style={{ opacity: 0, position: 'absolute', zIndex: -10 }} // Hide the video, use canvas
             />
+            
+            <canvas 
+              ref={canvasRef} 
+              className="bg-video pointer-events-none"
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover'
+              }}
+            />
+            {/* Interactive Spotlight Overlay */}
+            <motion.div 
+              className="pointer-events-none absolute inset-0 z-[5]"
+              style={{ 
+                background: spotlightMask,
+                mixBlendMode: "color-dodge" 
+              }}
+            />
+            <motion.div 
+              className="pointer-events-none absolute inset-0 z-[4]"
+              style={{ 
+                background: darkenMask,
+              }}
+            />
+
             {/* Corner blur mask overlay */}
             <div className="corner-blur-overlay"></div>
             <div className="bottom-vignette-overlay"></div>
             <div className="top-vignette-overlay"></div>
-          </div>
+          </motion.div>
 
 
 
