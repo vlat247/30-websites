@@ -1,0 +1,9 @@
+{
+  "buildCommand": "cd 2.japan-papercut && npm install && npm run build",
+  "outputDirectory": "2.japan-papercut/.next",
+  "installCommand": "echo skip",
+  "framework": "nextjs",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/$1" }
+  ]
+}

@@ -1,26 +1,70 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ── Design tokens ─────────────────────────────────────────────────────── */
+@theme {
+  /* Fonts */
+  --font-display: var(--font-display, "Georgia", serif);
+  --font-body:    var(--font-body, "Georgia", serif);
+
+  /* Japan Tales palette */
+  --color-sky:        #2c5f7c;
+  --color-peach:      #d99b6c;
+  --color-blush:      #e8b4a0;
+  --color-washi:      #f5ede0;
+  --color-indigo:     #3d4f6e;
+  --color-vermillion: #c0513a;
+  --color-gold:       #c9a84c;
+  --color-sakura:     #f0b8c8;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ── Global resets ─────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #f5ede0;
+  color: #3d4f6e;
+  font-family: var(--font-body, Georgia, serif);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Typography helpers ────────────────────────────────────────────────── */
+.font-display {
+  font-family: var(--font-display, Georgia, serif);
+  font-style: italic;
+}
+
+.font-body {
+  font-family: var(--font-body, Georgia, serif);
+}
+
+/* ── Paper-cut drop shadow utility ────────────────────────────────────── */
+.paper-shadow {
+  filter: drop-shadow(2px 4px 8px rgba(61, 79, 110, 0.18))
+          drop-shadow(0 1px 2px rgba(61, 79, 110, 0.08));
+}
+
+/* ── Scrollbar styling ─────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f5ede0;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(61, 79, 110, 0.3);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(61, 79, 110, 0.5);
 }

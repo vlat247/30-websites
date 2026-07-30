@@ -50,7 +50,12 @@ User will supply their own SVG paper-craft illustrations. Placeholder divs are m
 ## Dependencies Installed
 - `framer-motion` — animation + scroll logic
 - `tailwindcss@^4` — utility styling (uses `@import "tailwindcss"` NOT old directives)
-- Google Fonts via next/font: Shippori Mincho, IM Fell English SC
+- Google Fonts via next/font: **IM Fell English SC** (display), **Noto Serif** (body)
+
+## ⚠️ Known Font Compatibility Issue
+`Shippori_Mincho` from `next/font/google` **does NOT work** with Next.js 16 Turbopack.  
+Error: `Module not found: Can't resolve '@vercel/turbopack-next/internal/font/google/font'`  
+**Solution:** Use `Noto_Serif` as a drop-in replacement — similar classical feel, fully compatible.
 
 ## Dev Server
 ```bash
