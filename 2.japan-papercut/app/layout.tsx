@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { IM_Fell_English_SC, Noto_Serif } from "next/font/google";
 import "./globals.css";
+import Header from "@/components/Header";
 
 // ── Fonts ─────────────────────────────────────────────────────────────────
 // Display: elegant serif italics for titles
@@ -39,7 +40,10 @@ export default function RootLayout({
       lang="en"
       className={`${imFellEnglish.variable} ${notoSerif.variable} scroll-smooth`}
     >
-      <body className="min-h-full antialiased">{children}</body>
+      <body className="min-h-full antialiased">
+        <Header />
+        {children}
+      </body>
     </html>
   );
 }
