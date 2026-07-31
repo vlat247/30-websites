@@ -30,6 +30,8 @@ export const metadata: Metadata = {
   },
 };
 
+import CursorBubble from "@/components/CursorBubble";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -40,7 +42,8 @@ export default function RootLayout({
       lang="en"
       className={`${imFellEnglish.variable} ${notoSerif.variable} scroll-smooth`}
     >
-      <body className="min-h-full antialiased">
+      <body className="min-h-full antialiased cursor-none">
+        <CursorBubble />
         <Header />
         {children}
       </body>
