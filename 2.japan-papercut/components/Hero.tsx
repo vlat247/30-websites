@@ -20,9 +20,9 @@ interface QuoteWordProps {
 }
 
 function QuoteWord({ word, index, totalWords, progress }: QuoteWordProps) {
-  // Smooth reveal window over scroll progress 0.35 to 0.90
-  const startProgress = 0.35 + (index / totalWords) * 0.55;
-  const endProgress = startProgress + (0.55 / totalWords) * 1.2;
+  // Smooth reveal window over scroll progress 0.45 to 0.67
+  const startProgress = 0.45 + (index / totalWords) * 0.22;
+  const endProgress = startProgress + (0.22 / totalWords) * 1.3;
 
   const opacity = useTransform(progress, [startProgress, endProgress], [0.12, 1]);
   const y = useTransform(progress, [startProgress, endProgress], [6, 0]);
@@ -84,26 +84,31 @@ export default function Hero() {
   });
 
   // Drop 1 (top right): Starts small and slate-colored, grows and turns black
-  const drop1Scale = useTransform(scrollYProgress, [0, 0.3, 0.75], [0, 4, 80]);
-  const drop1Color = useTransform(scrollYProgress, [0, 0.3, 0.65], ["#64748b", "#0f172a", "#000000"]);
+  const drop1Scale = useTransform(scrollYProgress, [0.20, 0.45, 0.70], [0, 4, 80]);
+  const drop1Color = useTransform(scrollYProgress, [0.20, 0.45, 0.65], ["#64748b", "#0f172a", "#000000"]);
 
   // Drop 2 (bottom left): Appears next
-  const drop2Scale = useTransform(scrollYProgress, [0.1, 0.4, 0.8], [0, 5, 90]);
-  const drop2Color = useTransform(scrollYProgress, [0.1, 0.35, 0.7], ["#475569", "#0f172a", "#000000"]);
+  const drop2Scale = useTransform(scrollYProgress, [0.25, 0.50, 0.75], [0, 5, 90]);
+  const drop2Color = useTransform(scrollYProgress, [0.25, 0.48, 0.70], ["#475569", "#0f172a", "#000000"]);
 
   // Drop 3 (center): Appears last
-  const drop3Scale = useTransform(scrollYProgress, [0.2, 0.5, 0.85], [0, 6, 100]);
-  const drop3Color = useTransform(scrollYProgress, [0.2, 0.45, 0.85], ["#334155", "#0f172a", "#000000"]);
+  const drop3Scale = useTransform(scrollYProgress, [0.30, 0.55, 0.80], [0, 6, 100]);
+  const drop3Color = useTransform(scrollYProgress, [0.30, 0.52, 0.75], ["#334155", "#0f172a", "#000000"]);
 
-  // Fade out initial hero content as ink spreads
-  const initialContentOpacity = useTransform(scrollYProgress, [0.12, 0.32], [1, 0]);
+  // Fade out initial hero content as ink spreads (delayed so hero section stays visible longer)
+  const initialContentOpacity = useTransform(scrollYProgress, [0.25, 0.45], [1, 0]);
 
-  // Dark section quote container opacity
-  const quoteContainerOpacity = useTransform(scrollYProgress, [0.30, 0.36, 0.98, 1], [0, 1, 1, 0]);
+  // Dark section quote container opacity (fades in as ink covers screen, then completely fades OUT before vlad text)
+  const quoteContainerOpacity = useTransform(scrollYProgress, [0.40, 0.46, 0.70, 0.78], [0, 1, 1, 0]);
 
   // Ambient warm background glow near the end of quote ("turn on the light")
-  const lightGlowOpacity = useTransform(scrollYProgress, [0.82, 0.92], [0, 0.8]);
-  const lightGlowScale = useTransform(scrollYProgress, [0.82, 0.95], [0.6, 1.3]);
+  const lightGlowOpacity = useTransform(scrollYProgress, [0.64, 0.72], [0, 0.8]);
+  const lightGlowScale = useTransform(scrollYProgress, [0.64, 0.74], [0.6, 1.3]);
+
+  // "made by vlad" credit appearance AFTER quote completely disappears
+  const vladOpacity = useTransform(scrollYProgress, [0.78, 0.86], [0, 1]);
+  const vladY = useTransform(scrollYProgress, [0.78, 0.86], [20, 0]);
+  const vladScale = useTransform(scrollYProgress, [0.78, 0.86], [0.92, 1]);
 
   return (
     <div ref={containerRef} className="w-full h-[600vh] bg-[#fdfaf6] relative">
@@ -129,13 +134,16 @@ export default function Hero() {
           </nav>
         </motion.header>
 
-        {/* Headline */}
+        {/* Giant Japanese Text under the top header */}
         <motion.div 
           style={{ opacity: initialContentOpacity }}
-          className="absolute top-[28%] md:top-[32%] left-8 md:left-16 z-10 max-w-3xl pointer-events-none"
+          className="absolute top-[28%] md:top-[30%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 w-full max-w-none flex justify-center items-center pointer-events-none select-none px-2 sm:px-4"
         >
-          <h1 className="font-display font-bold text-5xl md:text-7xl lg:text-8xl">
-            Light in the <br /> Darkness
+          <h1 
+            style={{ fontFamily: '"Hiragino Mincho ProN", "Yu Mincho", "Shippori Mincho", "Noto Serif JP", serif' }}
+            className="font-bold text-[24vw] sm:text-[21vw] md:text-[19vw] lg:text-[18vw] leading-none tracking-tight text-[#1e293b] whitespace-nowrap text-center drop-shadow-sm"
+          >
+            最善を尽くす
           </h1>
         </motion.div>
 
@@ -143,7 +151,7 @@ export default function Hero() {
           style={{ opacity: initialContentOpacity }}
           src="/octopus.png" 
           alt="Octopus" 
-          className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-[120vw] md:w-[100vw] lg:w-[90vw] max-w-none h-auto object-contain pointer-events-none" 
+          className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 w-[120vw] md:w-[100vw] lg:w-[90vw] max-w-none h-auto object-contain pointer-events-none z-10" 
         />
 
         {/* --- INK DROPS --- */}
@@ -212,6 +220,23 @@ export default function Hero() {
               ))}
             </blockquote>
           </div>
+        </motion.div>
+
+        {/* --- MADE BY VLAD OVERLAY (Appears after quote completely disappears) --- */}
+        <motion.div 
+          style={{ opacity: vladOpacity }}
+          className="absolute inset-0 z-50 flex flex-col items-center justify-center px-6 text-center pointer-events-none select-none"
+        >
+          <motion.div
+            style={{
+              y: vladY,
+              scale: vladScale,
+              fontFamily: '"Hiragino Mincho ProN", "Yu Mincho", "Shippori Mincho", "Noto Serif JP", "IM Fell English SC", serif',
+            }}
+            className="text-2xl sm:text-4xl md:text-5xl tracking-[0.35em] text-slate-100 font-normal drop-shadow-[0_0_20px_rgba(255,255,255,0.4)]"
+          >
+            made by vlad
+          </motion.div>
         </motion.div>
       </div>
     </div>
