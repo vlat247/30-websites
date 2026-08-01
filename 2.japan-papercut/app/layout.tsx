@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { IM_Fell_English_SC, Noto_Serif } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
+import CursorBubble from "@/components/CursorBubble";
 
 // ── Fonts ─────────────────────────────────────────────────────────────────
 // Display: elegant serif italics for titles
@@ -30,8 +30,6 @@ export const metadata: Metadata = {
   },
 };
 
-import CursorBubble from "@/components/CursorBubble";
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -44,7 +42,6 @@ export default function RootLayout({
     >
       <body className="min-h-full antialiased cursor-none">
         <CursorBubble />
-        <Header />
         {children}
       </body>
     </html>
