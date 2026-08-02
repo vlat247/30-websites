@@ -111,7 +111,15 @@ export default function Hero() {
   const vladScale = useTransform(scrollYProgress, [0.78, 0.86], [0.92, 1]);
 
   return (
-    <div ref={containerRef} className="w-full h-[600vh] bg-[#fdfaf6] relative">
+    <div 
+      ref={containerRef} 
+      className="w-full h-[600vh] bg-[#fdfaf6] relative"
+      style={{
+        backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paperNoise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 0.65 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paperNoise)'/%3E%3C/svg%3E")`,
+        backgroundRepeat: "repeat",
+        backgroundSize: "180px 180px",
+      }}
+    >
       <div className="sticky top-0 w-full h-screen overflow-hidden">
         {/* Original Content */}
         <motion.header 
@@ -134,14 +142,39 @@ export default function Hero() {
           </nav>
         </motion.header>
 
+        {/* Japan Flag Red Sun Circle with Washi Paper Grain Texture */}
+        <motion.div 
+          style={{ opacity: initialContentOpacity }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 flex justify-center items-center pointer-events-none select-none"
+        >
+          <div 
+            className="relative w-[220px] h-[220px] sm:w-[330px] sm:h-[330px] md:w-[410px] md:h-[410px] lg:w-[470px] lg:h-[470px] rounded-full bg-[#bc002d] shadow-2xl opacity-95 overflow-hidden"
+            style={{
+              boxShadow: "0 10px 35px rgba(188, 0, 45, 0.35), inset 0 0 25px rgba(0, 0, 0, 0.25)",
+            }}
+          >
+            {/* Paper Grain Overlay on Red Circle */}
+            <div 
+              className="absolute inset-0 w-full h-full mix-blend-overlay opacity-70 pointer-events-none"
+              style={{
+                backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='circleNoise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 0.85 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23circleNoise)'/%3E%3C/svg%3E")`,
+                backgroundRepeat: "repeat",
+                backgroundSize: "160px 160px",
+              }}
+            />
+            {/* Inner Paper Cut Shadow Edge */}
+            <div className="absolute inset-0 rounded-full border border-black/15 shadow-[inset_0_2px_10px_rgba(0,0,0,0.3)] pointer-events-none" />
+          </div>
+        </motion.div>
+
         {/* Giant Japanese Text under the top header */}
         <motion.div 
           style={{ opacity: initialContentOpacity }}
-          className="absolute top-[28%] md:top-[30%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-0 w-full max-w-none flex justify-center items-center pointer-events-none select-none px-2 sm:px-4"
+          className="absolute top-[28%] md:top-[30%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 w-full max-w-none flex justify-center items-center pointer-events-none select-none px-2 sm:px-4"
         >
           <h1 
             style={{ fontFamily: '"Hiragino Mincho ProN", "Yu Mincho", "Shippori Mincho", "Noto Serif JP", serif' }}
-            className="font-bold text-[24vw] sm:text-[21vw] md:text-[19vw] lg:text-[18vw] leading-none tracking-tight text-[#1e293b] whitespace-nowrap text-center drop-shadow-sm"
+            className="font-bold text-[24vw] sm:text-[21vw] md:text-[19vw] lg:text-[18vw] leading-none tracking-tight text-[#1e293b] whitespace-nowrap text-center drop-shadow-md"
           >
             最善を尽くす
           </h1>

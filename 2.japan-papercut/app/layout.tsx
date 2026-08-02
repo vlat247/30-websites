@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { IM_Fell_English_SC, Noto_Serif } from "next/font/google";
 import "./globals.css";
 import CursorBubble from "@/components/CursorBubble";
+import GrainOverlay from "@/components/GrainOverlay";
 
 // ── Fonts ─────────────────────────────────────────────────────────────────
 // Display: elegant serif italics for titles
@@ -40,7 +41,8 @@ export default function RootLayout({
       lang="en"
       className={`${imFellEnglish.variable} ${notoSerif.variable} scroll-smooth`}
     >
-      <body className="min-h-full antialiased cursor-none">
+      <body className="min-h-full antialiased cursor-none relative">
+        <GrainOverlay />
         <CursorBubble />
         {children}
       </body>
