@@ -1,26 +1,47 @@
+@import url('https://cdn.jsdelivr.net/fontsource/fonts/manufacturing-consent@latest/index.css');
+@import url('https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=UnifrakturCook:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Jacquard+24&family=Jim+Nightshade&family=Pinyon+Script&family=Special+Gothic+Expanded+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Syne:wght@400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0a0a0a;
+  --foreground: #ffffff;
+  --font-sans: 'Outfit', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-manufacturing-consent: 'Manufacturing Consent', 'UnifrakturMaguntia', 'UnifrakturCook', serif;
+  --font-jim-nightshade: 'Jim Nightshade', cursive;
+  --font-outfit: 'Outfit', sans-serif;
+  --font-syne: 'Syne', sans-serif;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-sans);
+  --font-manufacturing-consent: var(--font-manufacturing-consent);
+  --font-jim-nightshade: var(--font-jim-nightshade);
+  --font-outfit: var(--font-outfit);
+  --font-syne: var(--font-syne);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.font-manufacturing-consent {
+  font-family: 'Manufacturing Consent', 'UnifrakturMaguntia', 'UnifrakturCook', serif;
+}
+
+.font-jim-nightshade {
+  font-family: 'Jim Nightshade', cursive;
+}
+
+.font-outfit {
+  font-family: 'Outfit', 'Plus Jakarta Sans', sans-serif;
+}
+
+.font-syne {
+  font-family: 'Syne', sans-serif;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-outfit);
 }

@@ -1,0 +1,11 @@
+{
+  "name": "design-practice",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "cd 1.vision-ascii && npm run dev",
+    "build": "if [ -d \"1.vision-ascii\" ]; then cd 1.vision-ascii; fi && npm install && npm run build",
+    "start": "cd 1.vision-ascii && npm run start",
+    "lint": "cd 1.vision-ascii && npm run lint"
+  }
+}

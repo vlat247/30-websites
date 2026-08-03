@@ -14,26 +14,17 @@ export default function Home() {
   // Mouse interactivity state
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
-  const [windowSize, setWindowSize] = useState({ width: 1920, height: 1080 });
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      setWindowSize({ width: window.innerWidth, height: window.innerHeight });
-      
-      const handleResize = () => {
-        setWindowSize({ width: window.innerWidth, height: window.innerHeight });
-      };
-      
       const handleMouseMove = (e: MouseEvent) => {
         mouseX.set(e.clientX);
         mouseY.set(e.clientY);
       };
 
-      window.addEventListener("resize", handleResize);
       window.addEventListener("mousemove", handleMouseMove);
 
       return () => {
-        window.removeEventListener("resize", handleResize);
         window.removeEventListener("mousemove", handleMouseMove);
       };
     }

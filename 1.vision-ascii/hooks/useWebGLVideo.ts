@@ -209,7 +209,7 @@ export function useWebGLVideo(
     const videoAspectLocation = gl.getUniformLocation(program, "u_videoAspect");
     const canvasAspectLocation = gl.getUniformLocation(program, "u_canvasAspect");
     
-    let startTime = performance.now();
+    const startTime = performance.now();
     
     const resizeCanvas = () => {
       // Set canvas resolution to window size to avoid blurry textures
@@ -254,7 +254,7 @@ export function useWebGLVideo(
       if (video.videoWidth > 0 && video.videoHeight > 0) {
         videoAspect = video.videoWidth / video.videoHeight;
       }
-      let canvasAspect = gl.canvas.width / gl.canvas.height;
+      const canvasAspect = gl.canvas.width / gl.canvas.height;
       
       gl.uniform1f(videoAspectLocation, videoAspect);
       gl.uniform1f(canvasAspectLocation, canvasAspect);
