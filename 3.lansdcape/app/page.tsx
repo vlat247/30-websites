@@ -8,6 +8,11 @@ function mapRange(value: number, inMin: number, inMax: number, outMin: number, o
   return outMin + ((value - inMin) / (inMax - inMin)) * (outMax - outMin);
 }
 
+// Reverting to Sine Easing. It provides soft stops without accelerating too much in the middle.
+function easeInOutSine(x: number): number {
+  return -(Math.cos(Math.PI * x) - 1) / 2;
+}
+
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -38,8 +43,8 @@ export default function Home() {
     };
 
     const loop = () => {
-      // Smooth interpolation for scroll
-      currentProgress += (targetProgress - currentProgress) * 0.08;
+      // Very smooth interpolation for scroll (lowered to 0.04 for heavier, slower smoothing)
+      currentProgress += (targetProgress - currentProgress) * 0.04;
 
       // Calculate scrubbing speed to add a very subtle smoothing effect (blur) when scrolling fast
       // Removing the dark overlay and keeping only a soft, proportional blur to mask keyframe jumps
@@ -48,18 +53,17 @@ export default function Home() {
       setScrollBlur(blurAmount);
 
       // --- TIMELINE MAPPING ---
-      // 0.00 -> 0.35: Video 0.05s to 6.0s
-      // 0.35 -> 0.55: Video paused at 6.0s
-      // 0.55 -> 0.80: Video 6.0s to 10.0s
-      // 0.80 -> 1.00: Video paused at 10.0s
-      
       let time = 0.05;
       if (currentProgress <= 0.35) {
-        time = mapRange(currentProgress, 0, 0.35, 0.05, 6.0);
+        // Sine easing applied to make the stop at 6.0s smooth without rushing the middle
+        const t = currentProgress / 0.35;
+        time = 0.05 + easeInOutSine(t) * (6.0 - 0.05);
       } else if (currentProgress <= 0.55) {
         time = 6.0;
       } else if (currentProgress <= 0.80) {
-        time = mapRange(currentProgress, 0.55, 0.80, 6.0, 10.0);
+        // Sine easing applied to make the stop at 10.0s smooth without rushing the middle
+        const t = (currentProgress - 0.55) / 0.25;
+        time = 6.0 + easeInOutSine(t) * (10.0 - 6.0);
       } else {
         time = 10.0;
       }
@@ -107,7 +111,7 @@ export default function Home() {
   }, []);
 
   return (
-    <main ref={containerRef} className="relative h-[600vh] w-full bg-black">
+    <main ref={containerRef} className="relative h-[800vh] w-full bg-black">
       <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center overflow-hidden px-6 text-center select-none">
         
         <div 
