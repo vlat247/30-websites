@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import AsciiImage from "../components/AsciiImage";
 
 function mapRange(value: number, inMin: number, inMax: number, outMin: number, outMax: number) {
   if (value <= inMin) return outMin;
@@ -142,23 +143,54 @@ export default function Home() {
           />
           
           <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-black/80 pointer-events-none" />
+          {/* Bottom Vignette */}
+          <div className="absolute inset-x-0 bottom-0 h-[35vh] bg-gradient-to-t from-black/80 via-black/30 to-transparent pointer-events-none" />
         </div>
 
-        {/* Text 1: The Initial Title */}
-        <h1 
+        {/* Section 1: The Initial Title and Subtitle */}
+        <div 
           style={{ opacity: title1Opacity, pointerEvents: title1Opacity > 0 ? 'auto' : 'none' }}
-          className="absolute font-manufacturing-consent text-5xl sm:text-7xl md:text-8xl lg:text-[10rem] font-normal tracking-wide text-stone-100 drop-shadow-[0_12px_35px_rgba(0,0,0,0.95)]"
+          className="absolute inset-0 w-full h-full pointer-events-none"
         >
-          Hero&apos;s journey
-        </h1>
+          {/* Main Title Centered */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <h1 className="font-manufacturing-consent text-5xl sm:text-7xl md:text-8xl lg:text-[10rem] font-normal tracking-wide text-stone-100 drop-shadow-[0_12px_35px_rgba(0,0,0,0.95)]">
+              Hero&apos;s journey
+            </h1>
+          </div>
+          
+          {/* Subtitle positioned 15vh from bottom */}
+          <div className="absolute bottom-[15vh] left-0 right-0 flex flex-col items-center justify-center gap-5">
+            <img 
+              src="/crest.png" 
+              alt="Decoration" 
+              className="w-12 h-12 opacity-90 drop-shadow-[0_2px_10px_rgba(255,255,255,0.3)]" 
+            />
+            <p 
+              style={{ fontFamily: 'var(--font-playfair-display)' }}
+              className="text-xl md:text-2xl lg:text-3xl text-stone-200 text-center max-w-lg drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)] leading-snug"
+            >
+              You can be scared,<br />but will this change your path?
+            </p>
+          </div>
+        </div>
 
         {/* Text 2: The First Breakpoint */}
-        <h2 
+        <div 
           style={{ opacity: title2Opacity, pointerEvents: title2Opacity > 0 ? 'auto' : 'none' }}
-          className="absolute font-manufacturing-consent text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-normal tracking-wide text-stone-100 drop-shadow-[0_12px_35px_rgba(0,0,0,0.95)]"
+          className="absolute w-full px-6 sm:px-12 md:px-24 flex items-center justify-between gap-8"
         >
-          A New Path Emerges
-        </h2>
+          <h2 className="font-manufacturing-consent text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-normal tracking-wide text-stone-100 drop-shadow-[0_12px_35px_rgba(0,0,0,0.95)] w-1/2 text-left">
+            A New Path Emerges
+          </h2>
+          <div className="w-1/2 flex justify-end items-center">
+            <AsciiImage 
+               src="/horse.png" 
+               charsPerLine={100} 
+               className="relative -left-[10px] text-purple-900 mix-blend-color-dodge drop-shadow-[0_0_35px_rgba(147,51,234,0.8)] opacity-90 brightness-75 contrast-125 saturate-150" 
+            />
+          </div>
+        </div>
 
         {/* Text 3: The Second Breakpoint (End) */}
         <div 
@@ -180,7 +212,7 @@ export default function Home() {
         style={{ transform: `translateY(${footerTranslate}%)` }}
         className="fixed bottom-0 left-0 w-full z-50 bg-black/90 backdrop-blur-lg text-stone-400 py-6 px-8 border-t border-white/10 will-change-transform"
       >
-        <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="w-full flex flex-col md:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <div className="text-sm font-medium tracking-widest uppercase text-stone-200">
               King's Landing
