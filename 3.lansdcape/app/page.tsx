@@ -71,8 +71,13 @@ export default function Home() {
       }
 
       if (videoRef.current) {
-        if (Math.abs(videoRef.current.currentTime - time) > 0.03) {
-          videoRef.current.currentTime = time;
+        try {
+          if (Math.abs(videoRef.current.currentTime - time) > 0.03) {
+            videoRef.current.currentTime = time;
+          }
+        } catch (error) {
+          // Ignore DOM exceptions when tab is hidden or video is suspended
+          console.warn("Could not update video time", error);
         }
       }
 
