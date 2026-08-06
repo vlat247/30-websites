@@ -9,9 +9,9 @@ function mapRange(value: number, inMin: number, inMax: number, outMin: number, o
   return outMin + ((value - inMin) / (inMax - inMin)) * (outMax - outMin);
 }
 
-// Using Quart easing for a very prolonged, smooth deceleration and acceleration at the stops
-function easeInOutQuart(x: number): number {
-  return x < 0.5 ? 8 * x * x * x * x : 1 - Math.pow(-2 * x + 2, 4) / 2;
+// Using Cubic easing: stronger than Quad but not as sticky as Quart. The sweet spot.
+function easeInOutCubic(x: number): number {
+  return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
 }
 
 export default function Home() {
@@ -63,15 +63,15 @@ export default function Home() {
       // --- TIMELINE MAPPING ---
       let time = 0.05;
       if (currentProgress <= 0.35) {
-        // Quart easing applied to make the stop at 6.0s extremely smooth and slow at the end
+        // Cubic easing applied for a very smooth stop at 6.0s
         const t = currentProgress / 0.35;
-        time = 0.05 + easeInOutQuart(t) * (6.0 - 0.05);
+        time = 0.05 + easeInOutCubic(t) * (6.0 - 0.05);
       } else if (currentProgress <= 0.55) {
         time = 6.0;
       } else if (currentProgress <= 0.80) {
-        // Quart easing applied for a slow start and smooth stop at 10.0s
+        // Cubic easing applied for a smooth start and stop at 10.0s
         const t = (currentProgress - 0.55) / 0.25;
-        time = 6.0 + easeInOutQuart(t) * (10.0 - 6.0);
+        time = 6.0 + easeInOutCubic(t) * (10.0 - 6.0);
       } else {
         time = 10.0;
       }
