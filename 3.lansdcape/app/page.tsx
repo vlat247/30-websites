@@ -9,9 +9,9 @@ function mapRange(value: number, inMin: number, inMax: number, outMin: number, o
   return outMin + ((value - inMin) / (inMax - inMin)) * (outMax - outMin);
 }
 
-// Reverting to Sine Easing. It provides soft stops without accelerating too much in the middle.
-function easeInOutSine(x: number): number {
-  return -(Math.cos(Math.PI * x) - 1) / 2;
+// Using Quart easing for a very prolonged, smooth deceleration and acceleration at the stops
+function easeInOutQuart(x: number): number {
+  return x < 0.5 ? 8 * x * x * x * x : 1 - Math.pow(-2 * x + 2, 4) / 2;
 }
 
 export default function Home() {
@@ -63,15 +63,15 @@ export default function Home() {
       // --- TIMELINE MAPPING ---
       let time = 0.05;
       if (currentProgress <= 0.35) {
-        // Sine easing applied to make the stop at 6.0s smooth without rushing the middle
+        // Quart easing applied to make the stop at 6.0s extremely smooth and slow at the end
         const t = currentProgress / 0.35;
-        time = 0.05 + easeInOutSine(t) * (6.0 - 0.05);
+        time = 0.05 + easeInOutQuart(t) * (6.0 - 0.05);
       } else if (currentProgress <= 0.55) {
         time = 6.0;
       } else if (currentProgress <= 0.80) {
-        // Sine easing applied to make the stop at 10.0s smooth without rushing the middle
+        // Quart easing applied for a slow start and smooth stop at 10.0s
         const t = (currentProgress - 0.55) / 0.25;
-        time = 6.0 + easeInOutSine(t) * (10.0 - 6.0);
+        time = 6.0 + easeInOutQuart(t) * (10.0 - 6.0);
       } else {
         time = 10.0;
       }
