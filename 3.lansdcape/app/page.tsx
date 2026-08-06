@@ -19,6 +19,12 @@ export default function Home() {
   const videoRef = useRef<HTMLVideoElement>(null);
   
   const [title1Opacity, setTitle1Opacity] = useState(1);
+  const [subtitle1Opacity, setSubtitle1Opacity] = useState(1);
+  const [subtitle1TranslateY, setSubtitle1TranslateY] = useState(0);
+  const [subtitle1Blur, setSubtitle1Blur] = useState(0);
+  const [title1_5Opacity, setTitle1_5Opacity] = useState(0);
+  const [title1_5TranslateY, setTitle1_5TranslateY] = useState(0);
+  const [title1_5Blur, setTitle1_5Blur] = useState(0);
   const [title2Opacity, setTitle2Opacity] = useState(0);
   const [title3Opacity, setTitle3Opacity] = useState(0);
   const [footerTranslate, setFooterTranslate] = useState(100);
@@ -81,8 +87,40 @@ export default function Home() {
         }
       }
 
-      // Title 1 (Main Title): fades out from 0 to 0.15
-      setTitle1Opacity(mapRange(currentProgress, 0, 0.15, 1, 0));
+      // Title 1 (Main Title): fades out from 0.05 to 0.15
+      setTitle1Opacity(mapRange(currentProgress, 0.05, 0.15, 1, 0));
+
+      // Subtitle 1: Stays until 0.15, then moves down, fades out, and blurs by 0.20
+      if (currentProgress < 0.15) {
+        setSubtitle1Opacity(1);
+        setSubtitle1TranslateY(0);
+        setSubtitle1Blur(0);
+      } else {
+        setSubtitle1Opacity(mapRange(currentProgress, 0.15, 0.20, 1, 0));
+        setSubtitle1TranslateY(mapRange(currentProgress, 0.15, 0.20, 0, 50));
+        setSubtitle1Blur(mapRange(currentProgress, 0.15, 0.20, 0, 8));
+      }
+
+      // Title 1.5 (Interlude Subtitle): fades in 0.15 to 0.20, fades out 0.28 to 0.33 with downward motion and blur
+      if (currentProgress < 0.15) {
+        setTitle1_5Opacity(0);
+        setTitle1_5TranslateY(0);
+        setTitle1_5Blur(0);
+      } else if (currentProgress <= 0.20) {
+        setTitle1_5Opacity(mapRange(currentProgress, 0.15, 0.20, 0, 1));
+        setTitle1_5TranslateY(0);
+        setTitle1_5Blur(0);
+      } else if (currentProgress <= 0.28) {
+        setTitle1_5Opacity(1);
+        setTitle1_5TranslateY(0);
+        setTitle1_5Blur(0);
+      } else {
+        setTitle1_5Opacity(mapRange(currentProgress, 0.28, 0.33, 1, 0));
+        // Smoother and longer downward motion
+        setTitle1_5TranslateY(mapRange(currentProgress, 0.28, 0.33, 0, 60));
+        // Add blur effect as it fades out
+        setTitle1_5Blur(mapRange(currentProgress, 0.28, 0.33, 0, 8));
+      }
 
       // Title 2 (Breakpoint 1): fades in 0.35 to 0.40, stays till 0.50, fades out by 0.55
       if (currentProgress < 0.35) setTitle2Opacity(0);
@@ -153,29 +191,52 @@ export default function Home() {
         </div>
 
         {/* Section 1: The Initial Title and Subtitle */}
-        <div 
-          style={{ opacity: title1Opacity, pointerEvents: title1Opacity > 0 ? 'auto' : 'none' }}
-          className="absolute inset-0 w-full h-full pointer-events-none"
-        >
+        <div className="absolute inset-0 w-full h-full pointer-events-none">
           {/* Main Title Centered */}
-          <div className="absolute inset-0 flex items-center justify-center">
+          <div 
+            style={{ opacity: title1Opacity, pointerEvents: title1Opacity > 0 ? 'auto' : 'none' }}
+            className="absolute inset-0 flex items-center justify-center"
+          >
             <h1 className="font-manufacturing-consent text-5xl sm:text-7xl md:text-8xl lg:text-[10rem] font-normal tracking-wide text-stone-100 drop-shadow-[0_12px_35px_rgba(0,0,0,0.95)]">
               Hero&apos;s journey
             </h1>
           </div>
           
           {/* Subtitle positioned 15vh from bottom */}
-          <div className="absolute bottom-[15vh] left-0 right-0 flex flex-col items-center justify-center gap-5">
-            <img 
-              src="/crest.png" 
-              alt="Decoration" 
-              className="w-12 h-12 opacity-90 drop-shadow-[0_2px_10px_rgba(255,255,255,0.3)]" 
-            />
+          <div 
+            style={{ 
+              opacity: subtitle1Opacity, 
+              transform: `translateY(${subtitle1TranslateY}px)`,
+              filter: `blur(${subtitle1Blur}px)`,
+              pointerEvents: subtitle1Opacity > 0 ? 'auto' : 'none' 
+            }}
+            className="absolute bottom-[15vh] left-0 right-0 flex flex-col items-center justify-center gap-5"
+          >
             <p 
               style={{ fontFamily: 'var(--font-playfair-display)' }}
               className="text-xl md:text-2xl lg:text-3xl text-stone-200 text-center max-w-lg drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)] leading-snug"
             >
               You can be scared,<br />but will this change your path?
+            </p>
+          </div>
+        </div>
+
+        {/* Text 1.5: The Interlude Subtitle */}
+        <div 
+          style={{ 
+            opacity: title1_5Opacity, 
+            transform: `translateY(${title1_5TranslateY}px)`,
+            filter: `blur(${title1_5Blur}px)`,
+            pointerEvents: title1_5Opacity > 0 ? 'auto' : 'none' 
+          }}
+          className="absolute inset-0 w-full h-full pointer-events-none"
+        >
+          <div className="absolute bottom-[15vh] left-0 right-0 flex flex-col items-center justify-center gap-5">
+            <p 
+              style={{ fontFamily: 'var(--font-playfair-display)' }}
+              className="text-xl md:text-2xl lg:text-3xl text-stone-200 text-center max-w-lg drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)] leading-snug"
+            >
+              I hope not — there's too much waiting for you.
             </p>
           </div>
         </div>
