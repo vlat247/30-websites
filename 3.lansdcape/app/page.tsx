@@ -25,7 +25,9 @@ export default function Home() {
   const [title1_5Opacity, setTitle1_5Opacity] = useState(0);
   const [title1_5TranslateY, setTitle1_5TranslateY] = useState(0);
   const [title1_5Blur, setTitle1_5Blur] = useState(0);
-  const [title2Opacity, setTitle2Opacity] = useState(0);
+  const [title1_75Opacity, setTitle1_75Opacity] = useState(0);
+  const [title1_75TranslateY, setTitle1_75TranslateY] = useState(0);
+  const [title1_75Blur, setTitle1_75Blur] = useState(0);
   const [title3Opacity, setTitle3Opacity] = useState(0);
   const [footerTranslate, setFooterTranslate] = useState(100);
   
@@ -62,16 +64,10 @@ export default function Home() {
 
       // --- TIMELINE MAPPING ---
       let time = 0.05;
-      if (currentProgress <= 0.35) {
-        // Cubic easing applied for a very smooth stop at 6.0s
-        const t = currentProgress / 0.35;
-        time = 0.05 + easeInOutCubic(t) * (6.0 - 0.05);
-      } else if (currentProgress <= 0.55) {
-        time = 6.0;
-      } else if (currentProgress <= 0.80) {
+      if (currentProgress <= 0.80) {
         // Cubic easing applied for a smooth start and stop at 10.0s
-        const t = (currentProgress - 0.55) / 0.25;
-        time = 6.0 + easeInOutCubic(t) * (10.0 - 6.0);
+        const t = currentProgress / 0.80;
+        time = 0.05 + easeInOutCubic(t) * (10.0 - 0.05);
       } else {
         time = 10.0;
       }
@@ -90,43 +86,56 @@ export default function Home() {
       // Title 1 (Main Title): fades out from 0.05 to 0.15
       setTitle1Opacity(mapRange(currentProgress, 0.05, 0.15, 1, 0));
 
-      // Subtitle 1: Stays until 0.15, then moves down, fades out, and blurs by 0.20
-      if (currentProgress < 0.15) {
+      // Subtitle 1: Stays until 0.20, then moves down, fades out, and blurs by 0.25
+      if (currentProgress < 0.20) {
         setSubtitle1Opacity(1);
         setSubtitle1TranslateY(0);
         setSubtitle1Blur(0);
       } else {
-        setSubtitle1Opacity(mapRange(currentProgress, 0.15, 0.20, 1, 0));
-        setSubtitle1TranslateY(mapRange(currentProgress, 0.15, 0.20, 0, 50));
-        setSubtitle1Blur(mapRange(currentProgress, 0.15, 0.20, 0, 8));
+        setSubtitle1Opacity(mapRange(currentProgress, 0.20, 0.25, 1, 0));
+        setSubtitle1TranslateY(mapRange(currentProgress, 0.20, 0.25, 0, 50));
+        setSubtitle1Blur(mapRange(currentProgress, 0.20, 0.25, 0, 8));
       }
 
-      // Title 1.5 (Interlude Subtitle): fades in 0.15 to 0.20, fades out 0.28 to 0.33 with downward motion and blur
-      if (currentProgress < 0.15) {
+      // Title 1.5 (Interlude Subtitle): fades in 0.20 to 0.25, fades out 0.45 to 0.50 with downward motion and blur
+      if (currentProgress < 0.20) {
         setTitle1_5Opacity(0);
         setTitle1_5TranslateY(0);
         setTitle1_5Blur(0);
-      } else if (currentProgress <= 0.20) {
-        setTitle1_5Opacity(mapRange(currentProgress, 0.15, 0.20, 0, 1));
+      } else if (currentProgress <= 0.25) {
+        setTitle1_5Opacity(mapRange(currentProgress, 0.20, 0.25, 0, 1));
         setTitle1_5TranslateY(0);
         setTitle1_5Blur(0);
-      } else if (currentProgress <= 0.28) {
+      } else if (currentProgress <= 0.45) {
         setTitle1_5Opacity(1);
         setTitle1_5TranslateY(0);
         setTitle1_5Blur(0);
       } else {
-        setTitle1_5Opacity(mapRange(currentProgress, 0.28, 0.33, 1, 0));
+        setTitle1_5Opacity(mapRange(currentProgress, 0.45, 0.50, 1, 0));
         // Smoother and longer downward motion
-        setTitle1_5TranslateY(mapRange(currentProgress, 0.28, 0.33, 0, 60));
+        setTitle1_5TranslateY(mapRange(currentProgress, 0.45, 0.50, 0, 60));
         // Add blur effect as it fades out
-        setTitle1_5Blur(mapRange(currentProgress, 0.28, 0.33, 0, 8));
+        setTitle1_5Blur(mapRange(currentProgress, 0.45, 0.50, 0, 8));
       }
 
-      // Title 2 (Breakpoint 1): fades in 0.35 to 0.40, stays till 0.50, fades out by 0.55
-      if (currentProgress < 0.35) setTitle2Opacity(0);
-      else if (currentProgress <= 0.40) setTitle2Opacity(mapRange(currentProgress, 0.35, 0.40, 0, 1));
-      else if (currentProgress <= 0.50) setTitle2Opacity(1);
-      else setTitle2Opacity(mapRange(currentProgress, 0.50, 0.55, 1, 0));
+      // Title 1.75 (Third Subtitle): fades in 0.45 to 0.50, fades out 0.70 to 0.75 with downward motion and blur
+      if (currentProgress < 0.45) {
+        setTitle1_75Opacity(0);
+        setTitle1_75TranslateY(0);
+        setTitle1_75Blur(0);
+      } else if (currentProgress <= 0.50) {
+        setTitle1_75Opacity(mapRange(currentProgress, 0.45, 0.50, 0, 1));
+        setTitle1_75TranslateY(0);
+        setTitle1_75Blur(0);
+      } else if (currentProgress <= 0.70) {
+        setTitle1_75Opacity(1);
+        setTitle1_75TranslateY(0);
+        setTitle1_75Blur(0);
+      } else {
+        setTitle1_75Opacity(mapRange(currentProgress, 0.70, 0.75, 1, 0));
+        setTitle1_75TranslateY(mapRange(currentProgress, 0.70, 0.75, 0, 60));
+        setTitle1_75Blur(mapRange(currentProgress, 0.70, 0.75, 0, 8));
+      }
 
       // Title 3 (Breakpoint 2): fades in 0.80 to 0.85
       setTitle3Opacity(mapRange(currentProgress, 0.80, 0.85, 0, 1));
@@ -241,22 +250,26 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Text 2: The First Breakpoint */}
+        {/* Text 1.75: The Third Subtitle */}
         <div 
-          style={{ opacity: title2Opacity, pointerEvents: title2Opacity > 0 ? 'auto' : 'none' }}
-          className="absolute w-full px-6 sm:px-12 md:px-24 flex items-center justify-between gap-8"
+          style={{ 
+            opacity: title1_75Opacity, 
+            transform: `translateY(${title1_75TranslateY}px)`,
+            filter: `blur(${title1_75Blur}px)`,
+            pointerEvents: title1_75Opacity > 0 ? 'auto' : 'none' 
+          }}
+          className="absolute inset-0 w-full h-full pointer-events-none"
         >
-          <h2 className="font-manufacturing-consent text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-normal tracking-wide text-stone-100 drop-shadow-[0_12px_35px_rgba(0,0,0,0.95)] w-1/2 text-left">
-            A New Path Emerges
-          </h2>
-          <div className="w-1/2 flex justify-end items-center">
-            <AsciiImage 
-               src="/horse.png" 
-               charsPerLine={100} 
-               className="relative -left-[10px] text-purple-900 mix-blend-color-dodge drop-shadow-[0_0_35px_rgba(147,51,234,0.8)] opacity-90 brightness-75 contrast-125 saturate-150" 
-            />
+          <div className="absolute bottom-[15vh] left-0 right-0 flex flex-col items-center justify-center gap-5">
+            <p 
+              style={{ fontFamily: 'var(--font-playfair-display)' }}
+              className="text-xl md:text-2xl lg:text-3xl text-stone-200 text-center max-w-lg drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)] leading-snug"
+            >
+              we choose the faith we follow, so what is your choice?
+            </p>
           </div>
         </div>
+
 
         {/* Text 3: The Second Breakpoint (End) */}
         <div 
