@@ -4,6 +4,74 @@ import { Download, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import { useRef, useState, useEffect } from "react";
 
+const SCRAMBLE_CHARS = "!<>-_\\/[]{}—=+*^?#________";
+const randomChar = () => SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
+
+function Marquee() {
+  const [displayTexts, setDisplayTexts] = useState<string[]>(Array(20).fill("grace! "));
+
+  useEffect(() => {
+    const timers = Array(20).fill(null).map((_, i) => {
+      let timeoutId: NodeJS.Timeout;
+      const text = "grace! ";
+      
+      const triggerScramble = () => {
+        let iteration = 0;
+        const maxIterations = 12;
+        
+        const runFrame = () => {
+          setDisplayTexts((prev) => {
+            const next = [...prev];
+            const resolveChance = iteration / maxIterations;
+            next[i] = text.split("").map((char, index) => {
+              if (char === " ") return " ";
+              return Math.random() < resolveChance ? text[index] : randomChar();
+            }).join("");
+            return next;
+          });
+          
+          if (iteration < maxIterations) {
+            iteration++;
+            timeoutId = setTimeout(runFrame, 40);
+          } else {
+            setDisplayTexts((prev) => {
+              const next = [...prev];
+              next[i] = text;
+              return next;
+            });
+            timeoutId = setTimeout(triggerScramble, Math.random() * 4000 + 1000);
+          }
+        };
+        
+        runFrame();
+      };
+
+      timeoutId = setTimeout(triggerScramble, Math.random() * 3000 + 500);
+      return () => clearTimeout(timeoutId);
+    });
+
+    return () => timers.forEach((cleanup) => cleanup());
+  }, []);
+
+  const renderWords = (offset = 0) => displayTexts.map((text, i) => {
+    const fontClass = i % 3 === 0 ? "font-mono" : i % 3 === 1 ? "font-sans tracking-wide" : "font-serif italic";
+    return (
+      <span key={i + offset} className={`text-2xl font-light shrink-0 w-[120px] text-center inline-block ${fontClass}`}>
+        {text}
+      </span>
+    );
+  });
+
+  return (
+    <div className="w-full bg-black py-3 overflow-hidden border-t border-white/10 mt-12 relative z-20">
+      <div className="flex whitespace-nowrap animate-marquee w-max">
+        {renderWords(0)}
+        {renderWords(20)}
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [completedTasks, setCompletedTasks] = useState<number[]>([]);
@@ -140,21 +208,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Marquee Footer */}
-      <div className="w-full bg-black py-3 overflow-hidden border-t border-white/10 mt-12 relative z-20">
-        <div className="flex whitespace-nowrap animate-marquee">
-          {Array(20).fill("grace! ").map((text, i) => (
-            <span key={i} className="text-2xl font-light px-4 shrink-0">
-              {text}
-            </span>
-          ))}
-          {Array(20).fill("grace! ").map((text, i) => (
-            <span key={i + 20} className="text-2xl font-light px-4 shrink-0">
-              {text}
-            </span>
-          ))}
-        </div>
-      </div>
+      <Marquee />
     </main>
   );
 }
