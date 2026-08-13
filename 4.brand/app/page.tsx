@@ -74,7 +74,8 @@ function Marquee() {
 
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [completedTasks, setCompletedTasks] = useState<number[]>([]);
+  const [activeWindow, setActiveWindow] = useState<'terminal' | 'dashboard'>('dashboard');
+  const [codeLines, setCodeLines] = useState<string[]>([]);
   const [cursorBlink, setCursorBlink] = useState(true);
 
   useEffect(() => {
@@ -83,22 +84,45 @@ export default function Home() {
       setCursorBlink((b) => !b);
     }, 500);
 
-    // Terminal simulation
-    const simulateTasks = async () => {
-      while (true) {
-        setCompletedTasks([]);
-        await new Promise((r) => setTimeout(r, 2000));
-        setCompletedTasks([0]);
-        await new Promise((r) => setTimeout(r, 1500));
-        setCompletedTasks([0, 1]);
-        await new Promise((r) => setTimeout(r, 1200));
-        setCompletedTasks([0, 1, 2]);
-        await new Promise((r) => setTimeout(r, 6000));
-      }
-    };
-    simulateTasks();
+    const codeSnippet = [
+      "import numpy as np",
+      "from grace import Agent",
+      "",
+      "> initializing GraceAgent(strategy='alpha_v1')...",
+      "agent = Agent()",
+      "agent.connect_to_exchange('NASDAQ')",
+      "",
+      "def on_tick(data):",
+      "    signal = agent.predict(data)",
+      "    if signal.confidence > 0.85:",
+      "        agent.execute_order('BUY', qty=100)",
+      "        print(f'Trade filled at {data.price}')",
+      "",
+      "agent.start_stream(on_tick)",
+      "> Analyzing market microstructure...",
+      "> Identified liquidity imbalance.",
+      "> Executing high-frequency block trade...",
+      "> Success: +14.2% yield realized."
+    ];
+    
+    let currentIndex = 0;
+    const typingInterval = setInterval(() => {
+      setCodeLines(prev => {
+        if (currentIndex >= codeSnippet.length) {
+          currentIndex = 0;
+          return [];
+        }
+        const next = [...prev, codeSnippet[currentIndex]];
+        currentIndex++;
+        if (next.length > 14) return next.slice(next.length - 14);
+        return next;
+      });
+    }, 600);
 
-    return () => clearInterval(cursorInterval);
+    return () => {
+      clearInterval(cursorInterval);
+      clearInterval(typingInterval);
+    };
   }, []);
 
   return (
@@ -124,9 +148,13 @@ export default function Home() {
       {/* Hero Section */}
       <div className="flex-1 flex flex-col items-center justify-start mt-20 px-8 z-10 relative w-full h-full">
         <div className="w-full max-w-5xl pointer-events-auto">
-          <h1 className="text-5xl md:text-7xl font-light leading-tight tracking-tight mb-12">
+          <h1 className="text-5xl md:text-7xl font-light leading-tight tracking-tight mb-6">
             AI agent<br />that really works.
           </h1>
+          
+          <p className="text-lg md:text-xl text-white/60 max-w-2xl mb-12 font-light leading-relaxed">
+            Grace operates autonomously on your behalf. Deploy sophisticated quantitative trading algorithms instantly—our agent writes the code, analyzes real-time market microstructure, and executes block trades with unparalleled precision.
+          </p>
           
           <div className="flex flex-col sm:flex-row items-center gap-4">
             <button className="flex items-center gap-2 bg-[#e8e8e8] text-black px-6 py-3 rounded-full hover:bg-white transition-colors text-sm font-medium">
@@ -143,18 +171,101 @@ export default function Home() {
         {/* Mock Window Container (Fixed) */}
         <div 
           ref={containerRef}
-          className="mt-20 w-full max-w-4xl h-[400px] md:h-[500px] border border-white/20 rounded-3xl bg-white/10 backdrop-blur-xl p-4 md:p-8 shadow-2xl relative overflow-hidden"
+          className="mt-20 w-full max-w-5xl h-[500px] md:h-[600px] border border-white/20 rounded-3xl bg-white/10 backdrop-blur-xl p-4 md:p-8 shadow-2xl relative overflow-hidden"
         >
+          {/* Dashboard Window (Draggable) */}
+          <motion.div 
+            drag
+            dragConstraints={containerRef}
+            dragElastic={0}
+            dragMomentum={false}
+            onPointerDown={() => setActiveWindow('dashboard')}
+            style={{ zIndex: activeWindow === 'dashboard' ? 20 : 10 }}
+            whileDrag={{ scale: 1.02, cursor: "grabbing" }}
+            className="w-[90%] max-w-xl absolute top-[5%] md:top-[10%] left-[10%] md:left-[35%] bg-[#1c1c1e]/95 backdrop-blur-3xl rounded-xl overflow-hidden font-sans text-sm border border-white/10 cursor-grab active:cursor-grabbing shadow-2xl flex flex-col ring-1 ring-black/50"
+          >
+            {/* Mac Window Header */}
+            <div className="flex items-center px-4 py-3 border-b border-white/10 bg-[#2d2d2d]/50 relative">
+              <div className="flex gap-2 absolute left-4">
+                <div className="w-3 h-3 rounded-full bg-[#ff5f56] border border-[#e0443e]"></div>
+                <div className="w-3 h-3 rounded-full bg-[#ffbd2e] border border-[#dea123]"></div>
+                <div className="w-3 h-3 rounded-full bg-[#27c93f] border border-[#1aab29]"></div>
+              </div>
+              <div className="font-medium text-white/80 text-xs w-full text-center">Grace Quant Analytics</div>
+            </div>
+            
+            <div className="p-5 flex flex-col gap-5">
+              {/* Top Stats */}
+              <div className="grid grid-cols-3 gap-4">
+                <div className="flex flex-col gap-1 p-3 rounded-lg bg-white/5 border border-white/5">
+                  <div className="text-white/40 text-xs font-medium">Net Portfolio</div>
+                  <div className="text-xl font-medium tracking-tight text-white/90">$45,231.00</div>
+                  <div className="text-emerald-400 text-xs font-medium">+14.2% YTD</div>
+                </div>
+                <div className="flex flex-col gap-1 p-3 rounded-lg bg-white/5 border border-white/5">
+                  <div className="text-white/40 text-xs font-medium">Sharpe Ratio</div>
+                  <div className="text-xl font-medium tracking-tight text-white/90">2.41</div>
+                  <div className="text-emerald-400 text-xs font-medium">Optimal</div>
+                </div>
+                <div className="flex flex-col gap-1 p-3 rounded-lg bg-white/5 border border-white/5">
+                  <div className="text-white/40 text-xs font-medium">Max Drawdown</div>
+                  <div className="text-xl font-medium tracking-tight text-white/90">-4.2%</div>
+                  <div className="text-emerald-400 text-xs font-medium">Controlled</div>
+                </div>
+              </div>
+
+              {/* Data Table */}
+              <div className="rounded-lg border border-white/10 bg-white/[0.02] overflow-hidden">
+                <div className="grid grid-cols-4 px-4 py-2 text-xs font-medium text-white/40 border-b border-white/10 bg-white/[0.02]">
+                  <div>Asset</div>
+                  <div className="text-right">Position</div>
+                  <div className="text-right">Entry</div>
+                  <div className="text-right">Unrealized P&L</div>
+                </div>
+                <div className="flex flex-col divide-y divide-white/5">
+                  <div className="grid grid-cols-4 px-4 py-2.5 text-xs">
+                    <div className="font-medium text-white/90">AAPL</div>
+                    <div className="text-right text-white/70">Long 140</div>
+                    <div className="text-right text-white/70">$172.40</div>
+                    <div className="text-right text-emerald-400">+$2,450.00</div>
+                  </div>
+                  <div className="grid grid-cols-4 px-4 py-2.5 text-xs">
+                    <div className="font-medium text-white/90">MSFT</div>
+                    <div className="text-right text-white/70">Short 50</div>
+                    <div className="text-right text-white/70">$412.10</div>
+                    <div className="text-right text-red-400">-$420.50</div>
+                  </div>
+                  <div className="grid grid-cols-4 px-4 py-2.5 text-xs">
+                    <div className="font-medium text-white/90">NVDA</div>
+                    <div className="text-right text-white/70">Long 85</div>
+                    <div className="text-right text-white/70">$118.20</div>
+                    <div className="text-right text-emerald-400">+$4,120.25</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex justify-between text-[11px] font-medium text-white/40 px-1">
+                <div className="flex items-center gap-2">
+                  <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
+                  Live Execution Active
+                </div>
+                <div>Last updated: Just now</div>
+              </div>
+            </div>
+          </motion.div>
+
           {/* Inner Terminal (Draggable) */}
           <motion.div 
             drag
             dragConstraints={containerRef}
             dragElastic={0}
             dragMomentum={false}
+            onPointerDown={() => setActiveWindow('terminal')}
+            style={{ zIndex: activeWindow === 'terminal' ? 20 : 10 }}
             whileDrag={{ scale: 1.02, cursor: "grabbing" }}
-            className="w-[90%] max-w-2xl bg-[#1e1e1e]/90 rounded-xl overflow-hidden font-mono text-sm border border-white/5 cursor-grab active:cursor-grabbing shadow-2xl mx-auto mt-[5%]"
+            className="w-[90%] max-w-2xl absolute top-[25%] left-[5%] bg-[#1e1e1e]/95 backdrop-blur-xl rounded-xl overflow-hidden font-mono text-sm border border-white/10 cursor-grab active:cursor-grabbing shadow-2xl"
           >
-            <div className="flex items-center justify-between px-4 py-2 bg-[#1a1a1a] border-b border-white/5">
+            <div className="flex items-center justify-between px-4 py-2 bg-[#1a1a1a] border-b border-white/10">
               <div className="flex gap-2">
                 <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
                 <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
@@ -164,44 +275,32 @@ export default function Home() {
               <div className="text-xs text-white/50">Get CLI</div>
             </div>
             
-            <div className="p-6 text-white/80 space-y-6">
-              <div>
-                <div className="text-white/40 mb-1">Question</div>
-                <div>What data should the mission control display?</div>
-                <div className="mt-2 pl-4 text-white/60">
-                  <div>[x] Real-time metrics</div>
-                  <div>[ ] System status</div>
-                </div>
-              </div>
-              
-              <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-white/40"></div>
-                  <span className="text-white/60">Analyzed scope <span className="text-white/30">2s</span></span>
-                </div>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-white"></div>
-                    <span>Started 3 agents</span>
-                  </div>
-                  <div className="pl-6 mt-2 space-y-1 text-white/60">
-                    <div className={completedTasks.includes(0) ? "text-green-400" : "animate-pulse"}>
-                      {completedTasks.includes(0) ? "●" : "○"} Health · {completedTasks.includes(0) ? "Deployed to cloud" : "Moving to cloud..."}
+            <div className="p-6 text-white/80 space-y-6 font-mono text-sm h-[320px] overflow-hidden flex flex-col justify-end">
+              <div className="flex flex-col gap-1.5 w-full">
+                {codeLines.map((line, i) => {
+                  let colorClass = "text-white/80";
+                  if (line.startsWith(">")) colorClass = "text-emerald-400";
+                  else if (line.startsWith("import") || line.startsWith("from")) colorClass = "text-purple-400";
+                  else if (line.includes("def") || line.includes("print")) colorClass = "text-blue-400";
+                  else if (line.includes("Agent") || line.includes("predict") || line.includes("execute_order")) colorClass = "text-amber-300";
+                  
+                  return (
+                    <div key={i} className="flex items-start gap-4 w-full">
+                      <span className="text-white/20 select-none text-xs mt-0.5 shrink-0">
+                        {String(i + 1).padStart(2, '0')}
+                      </span>
+                      <span className={`whitespace-pre ${colorClass}`}>
+                        {line || " "}
+                      </span>
                     </div>
-                    <div className={completedTasks.includes(1) ? "text-green-400" : completedTasks.includes(0) ? "animate-pulse" : "opacity-50"}>
-                      {completedTasks.includes(1) ? "●" : "○"} Deployments · {completedTasks.includes(1) ? "Deployed to cloud" : "Moving to cloud..."}
-                    </div>
-                    <div className={completedTasks.includes(2) ? "text-green-400" : completedTasks.includes(1) ? "animate-pulse" : "opacity-50"}>
-                      {completedTasks.includes(2) ? "●" : "○"} Incidents · {completedTasks.includes(2) ? "Deployed to cloud" : "Moving to cloud..."}
-                    </div>
-                  </div>
+                  );
+                })}
+                <div className="flex items-center gap-4 w-full">
+                  <span className="text-white/20 select-none text-xs shrink-0">
+                    {String(codeLines.length + 1).padStart(2, '0')}
+                  </span>
+                  <span className={`w-2 h-4 bg-white/50 ${cursorBlink ? "opacity-100" : "opacity-0"}`}></span>
                 </div>
-              </div>
-
-              <div className="mt-8 pt-4 border-t border-white/10 text-white/40 flex items-center gap-2 font-mono">
-                <span className="text-purple-400">→</span>
-                <span>Ask, plan, build anything</span>
-                <span className={`w-2 h-4 bg-white/50 ${cursorBlink ? "opacity-100" : "opacity-0"}`}></span>
               </div>
             </div>
           </motion.div>
