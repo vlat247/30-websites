@@ -148,13 +148,9 @@ export default function Home() {
       {/* Hero Section */}
       <div className="flex-1 flex flex-col items-center justify-start mt-20 px-8 z-10 relative w-full h-full">
         <div className="w-full max-w-5xl pointer-events-auto">
-          <h1 className="text-5xl md:text-7xl font-light leading-tight tracking-tight mb-6">
+          <h1 className="text-5xl md:text-7xl font-light leading-tight tracking-tight mb-12">
             AI agent<br />that really works.
           </h1>
-          
-          <p className="text-lg md:text-xl text-white/60 max-w-2xl mb-12 font-light leading-relaxed">
-            Grace operates autonomously on your behalf. Deploy sophisticated quantitative trading algorithms instantly—our agent writes the code, analyzes real-time market microstructure, and executes block trades with unparalleled precision.
-          </p>
           
           <div className="flex flex-col sm:flex-row items-center gap-4">
             <button className="flex items-center gap-2 bg-[#e8e8e8] text-black px-6 py-3 rounded-full hover:bg-white transition-colors text-sm font-medium">
@@ -244,11 +240,7 @@ export default function Home() {
                 </div>
               </div>
 
-              <div className="flex justify-between text-[11px] font-medium text-white/40 px-1">
-                <div className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
-                  Live Execution Active
-                </div>
+              <div className="flex justify-end text-[11px] font-medium text-white/40 px-1">
                 <div>Last updated: Just now</div>
               </div>
             </div>
