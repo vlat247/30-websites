@@ -277,7 +277,7 @@ export default function Home() {
           className="absolute left-[5%] md:left-[8%] top-[25%] md:top-[30%] flex flex-col items-start text-left"
         >
           <h2 className="font-manufacturing-consent text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-normal tracking-wide text-stone-100 drop-shadow-[0_12px_35px_rgba(0,0,0,0.95)]">
-            VPN that can trully protect you.
+            VPN that can truly protect you.
           </h2>
           <p className="mt-3 max-w-md text-sm md:text-lg text-stone-300 font-medium tracking-wide drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">
             Where vision meets reality. A new chapter unfolds across the digital horizon.
