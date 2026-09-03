@@ -274,14 +274,22 @@ export default function Home() {
         {/* Text 3: The Second Breakpoint (End) */}
         <div 
           style={{ opacity: title3Opacity, pointerEvents: title3Opacity > 0 ? 'auto' : 'none' }}
-          className="absolute left-[5%] md:left-[8%] top-[25%] md:top-[30%] flex flex-col items-start text-left"
+          className="absolute left-[5%] md:left-[10%] top-[25%] md:top-[30%] flex flex-col items-start text-left max-w-3xl"
         >
-          <h2 className="font-manufacturing-consent text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-normal tracking-wide text-stone-100 drop-shadow-[0_12px_35px_rgba(0,0,0,0.95)]">
-            VPN that can truly protect you.
+          <div className="inline-block mb-4 px-3 py-1 rounded-full border border-white/20 bg-white/5 backdrop-blur-md">
+             <span className="text-xs font-semibold tracking-widest text-stone-300 uppercase">Begin your own journey</span>
+          </div>
+          <h2 className="font-manufacturing-consent text-4xl sm:text-6xl md:text-7xl lg:text-[6rem] leading-none font-normal tracking-wide text-transparent bg-clip-text bg-gradient-to-br from-stone-100 via-stone-300 to-stone-500 drop-shadow-[0_12px_35px_rgba(0,0,0,0.95)] mb-6">
+            Uncompromising<br/>Privacy.
           </h2>
-          <p className="mt-3 max-w-md text-sm md:text-lg text-stone-300 font-medium tracking-wide drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)]">
-            Where vision meets reality. A new chapter unfolds across the digital horizon.
+          <p className="max-w-xl text-base md:text-xl text-stone-300/90 font-medium tracking-wide leading-relaxed drop-shadow-[0_4px_12px_rgba(0,0,0,0.8)] mb-10">
+            Experience the ultimate freedom. No logs. No limits. Just you and the open web, shielded by state-of-the-art encryption.
           </p>
+          
+          <button className="group relative px-8 py-4 bg-white text-black font-semibold tracking-wide text-sm md:text-base rounded-full overflow-hidden transition-transform hover:scale-105 active:scale-95">
+            <span className="relative z-10">Get Started Now</span>
+            <div className="absolute inset-0 h-full w-full bg-gradient-to-r from-stone-200 to-white transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300 ease-out -z-0"></div>
+          </button>
         </div>
 
       </div>
