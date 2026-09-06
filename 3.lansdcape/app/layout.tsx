@@ -25,6 +25,7 @@ export const metadata: Metadata = {
   description: "Experience the ultimate freedom. No logs. No limits. Just you and the open web, shielded by state-of-the-art encryption.",
 };
 
+// RootLayout wraps the entire application, providing global fonts and persistent components.
 export default function RootLayout({
   children,
 }: Readonly<{
