@@ -140,9 +140,9 @@ export default function Home() {
           <a href="#" className="hover:text-white transition-colors">Pricing</a>
           <a href="#" className="hover:text-white transition-colors">Enterprise</a>
         </div>
-        <div className="text-white/80 hover:text-white transition-colors cursor-pointer">
+        <a href="#" className="text-white/80 hover:text-white transition-colors">
           Contact us
-        </div>
+        </a>
       </nav>
 
       {/* Hero Section */}
